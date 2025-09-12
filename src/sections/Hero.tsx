@@ -5,11 +5,30 @@ import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const blogs = [
-  { id: 1, title: "ہربل ہیلتھ کے راز", image: "/finance.jpg" },
-  { id: 2, title: "قدرتی توانائی کے نسخے", image: "/Oil.jpg" },
-  { id: 3, title: "ذہنی وضاحت کے لئے ہربس", image: "/realestate.jpg" },
-  { id: 4, title: "صحت مند طرز زندگی کی ٹپس", image: "/finance.jpg" },
-  { id: 5, title: "روایتی ہربل حکمت", image: "/realestate.jpg" },
+ {
+    id: 2,
+    title: "ذہنی وضاحت کے لئے ہربس",
+    image: "/Oil.jpg",
+    category: "ذہنی صحت",
+    author: "ڈاکٹر عائشہ",
+    date: "2024-01-15",
+  },
+  {
+    id: 3,
+    title: "صحت مند طرز زندگی کی ٹپس",
+    image: "/realestate.jpg",
+    category: "لائف اسٹائل",
+    author: "ہربلسٹ یوسف",
+    date: "2024-02-01",
+  },
+  {
+    id: 4,
+    title: "روایتی ہربل حکمت",
+    image: "/finance.jpg",
+    category: "طب یونانی",
+    author: "پروفیسر کریم",
+    date: "2024-02-12",
+  },
 ];
 
 export const Hero = () => {
@@ -33,7 +52,7 @@ export const Hero = () => {
       setFade(true);
     }, 200); // small delay for smooth fade
   };
-
+ 
   const handleNext = () => {
     setFade(false);
     setTimeout(() => {
@@ -63,14 +82,17 @@ export const Hero = () => {
 
       {/* Overlay Green Box */}
       <div
-        className="absolute -bottom-9 bg-[#389958] text-white px-4 py-5 text-center sm:text-start 
+        className="absolute -bottom-14 bg-[#389958] text-white px-4 py-5 text-center sm:text-start 
              w-[90vw] md:w-[70%] lg:w-[50%] rounded-sm"
         dir="rtl"
         style={{ lineHeight: "1.6" }}
       >
-        <h1 className="font-medium text-xl md:text-3xl leading-snug ">
+        <h1 className="font-medium text-md md:text-3xl leading-snug ">
           {currentBlog.title}
         </h1>
+        <h3 className="mt-5 text-[8px]">
+          {currentBlog.category}
+        </h3>
       </div>
 
       {/* Navigation Arrows */}
