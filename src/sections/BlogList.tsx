@@ -1,5 +1,6 @@
 "use client";
 import { BlogCard } from "@/components/BlogCard";
+import { Sidebar } from "@/components/Sidebar";
 import { useState } from "react";
 
 const blogs = [
@@ -23,7 +24,7 @@ const blogs = [
     id: 4,
     title: "روایتی ہربل حکمت",
     image: "/finance.jpg",
-    category: "طب یونانی",
+    category: "روایتی ہربل حکمت",
     author: "پروفیسر کریم",
     date: "2024-02-12",
   },
@@ -201,23 +202,26 @@ export const BlogSection = () => {
   const [visible, setVisible] = useState(6);
 
   return (
-    <section className="py-20 px-6 md:p-20">
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {blogs.slice(0, visible).map((blog) => (
-          <BlogCard key={blog.id} blog={blog} />
-        ))}
-      </div>
-
-      {visible < blogs.length && (
-        <div className="text-center mt-10">
-          <button
-            onClick={() => setVisible((prev) => prev + 6)}
-            className="px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-500 text-white font-medium rounded-full shadow-lg hover:from-green-700 hover:to-emerald-600 transition"
-          >
-            مزید دیکھیں
-          </button>
+    <section className="relative flex flex-col md:flex-row gap-8 py-15 md:py-20 px-6 md:mt-4 md:p-20">
+      <div>
+        <div className="grid gap-10 sm:grid-cols-2">
+          {blogs.slice(0, visible).map((blog) => (
+            <BlogCard key={blog.id} blog={blog} />
+          ))}
         </div>
-      )}
+
+        {visible < blogs.length && (
+          <div className="text-center mt-10">
+            <button
+              onClick={() => setVisible((prev) => prev + 6)}
+              className="px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-500 text-white font-medium rounded-full shadow-lg hover:from-green-700 hover:to-emerald-600 transition"
+            >
+              مزید دیکھیں
+            </button>
+          </div>
+        )}
+      </div>
+      <Sidebar />
     </section>
   );
 };

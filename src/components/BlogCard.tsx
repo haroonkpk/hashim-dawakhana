@@ -30,9 +30,9 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog }) => (
         alt={blog.title}
         width={500}
         height={300}
-        className="w-full h-48 sm:h-56 lg:h-64 object-cover transition-transform duration-500 hover:scale-105"
+        className="w-full h-48 sm:h-46 lg:h-54 object-cover transition-transform duration-500 hover:scale-105"
       />
-      <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-green-600 text-white text-[8px] sm:text-xs px-3 py-2  rounded-full shadow-md">
+      <span className="absolute top-2 left-2 sm:top-3 sm:left-3  backdrop-blur-2xl text-white bg-gray-100/40 text-[8px] sm:text-xs px-3 py-2  rounded-full shadow-md">
         {blog.category}
       </span>
     </div> 

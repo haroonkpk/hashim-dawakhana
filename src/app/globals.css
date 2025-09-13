@@ -1,7 +1,28 @@
 @import "tailwindcss";
 
 
-:root html,body{
-  font-family: 'Noto Nastaliq Urdu',
-    serif;
+@font-face {
+  font-family: 'nafees-nastaleeq';
+  src: url('/200510114051nafees-nastaleeq.woff2') format('woff2'), url('/200510114051nafees-nastaleeq.woff') format('woff');
+  font-display: auto
+}
+
+.nafees-nastaleeq {
+  font-family: 'nafees-nastaleeq' !important
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+li,
+a,
+#menu-main li a,
+#menu-main li span {
+  font-family: 'nafees-nastaleeq',serif !important
 }

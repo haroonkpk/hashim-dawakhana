@@ -82,16 +82,21 @@ export const Hero = () => {
 
       {/* Overlay Green Box */}
       <div
-        className="absolute -bottom-14 bg-[#389958] text-white px-4 py-5 text-center sm:text-start 
-             w-[90vw] md:w-[70%] lg:w-[50%] rounded-sm"
+        className="absolute -bottom-16 md:-bottom-22  bg-[#389958] text-white px-6 py-5 lg:py-10 text-center sm:text-start 
+             w-[90vw] md:w-[70%] lg:w-[70%] rounded-sm"
         dir="rtl"
         style={{ lineHeight: "1.6" }}
       >
-        <h1 className="font-medium text-md md:text-3xl leading-snug ">
+        <h1 className="text-md md:text-3xl  ">
           {currentBlog.title}
         </h1>
-        <h3 className="mt-5 text-[8px]">
-          {currentBlog.category}
+        <h3 className="mt-3 text-[8px] md:text-sm text-white/70 flex gap-2 md:gap-5 justify-center md:justify-start ">
+          <span>
+            {currentBlog.category}
+            </span>
+          <span>
+            {currentBlog.date}
+            </span>
         </h3>
       </div>
 
