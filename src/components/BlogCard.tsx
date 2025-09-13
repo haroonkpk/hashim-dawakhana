@@ -1,9 +1,21 @@
 import Image from "next/image";
 
-export const BlogCard = ({ blog }:any) => (
+type Blog = {
+  image: string;
+  title: string;
+  category: string;
+  author: string;
+  date: string;
+};
+
+interface BlogCardProps {
+  blog: Blog;
+}
+
+export const BlogCard: React.FC<BlogCardProps> = ({ blog }) => (
   <article
     className="overflow-hidden bg-white transition-transform transform hover:-translate-y-1"
-    style={{ boxShadow: "0 2px 6px rgba(0,0,0,0)" }} // normal state light gray
+    style={{ boxShadow: "0 2px 6px rgba(0,0,0,0)" }}
     onMouseEnter={
       (e) =>
         (e.currentTarget.style.boxShadow = "0 8px 20px rgba(22,163,74,0.2)") // hover green
