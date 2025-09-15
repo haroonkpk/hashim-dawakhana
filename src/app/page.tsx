@@ -1,3 +1,4 @@
+import { Footer } from "@/components/layout/Footer";
 import { BlogSection } from "@/sections/BlogList";
 import { Hero } from "@/sections/Hero";
 
@@ -6,6 +7,7 @@ export default function Home() {
    <div className="flex flex-col gap-14">
     <Hero/>
     <BlogSection/>
+    <Footer/>
    </div>
   );
 }

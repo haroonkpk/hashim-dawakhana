@@ -5,43 +5,28 @@ import Link from "next/link";
 
 const categories = [
   {
-    id: 24,
-    name: "بچوں کے امراض",
-    count: 1,
-  },
-  {
-    id: 26,
-    name: "جڑی بوٹیاں اور ان کے خواص",
-    count: 71,
-  },
-  {
     id: 25,
     name: "جوڑوں کے امراض",
     count: 1,
   },
   {
-    id: 3,
-    name: "طب و صحت",
-    count: 2,
+    id: 26,
+    name: "جوڑوں کے امراض",
+    count: 1,
   },
   {
-    id: 23,
-    name: "عورتوں کے مخصوص امراض",
-    count: 2,
+    id: 27,
+    name: "جوڑوں کے امراض",
+    count: 1,
   },
   {
-    id: 15,
-    name: "کان کے امراض",
-    count: 2,
+    id: 28,
+    name: "جوڑوں کے امراض",
+    count: 1,
   },
   {
-    id: 22,
-    name: "مردوں کے مخصوص امراض",
-    count: 3,
-  },
-  {
-    id: 10,
-    name: "معدے کے امراض",
+    id: 29,
+    name: "جوڑوں کے امراض",
     count: 1,
   },
 ];
@@ -75,7 +60,7 @@ export const Sidebar = () => {
       </nav>
       <div className="sticky top-10 z-10 w-full h-[350px]">
         <Image
-          src="/Oil.jpg"
+          src="/finance.jpg"
           alt="hashim dawakhana"
           fill
           className="object-cover"
