@@ -87,10 +87,10 @@ export const Hero = () => {
         dir="rtl"
         style={{ lineHeight: "1.6" }}
       >
-        <h1 className="text-md md:text-3xl  ">
+        <h1 className="text-lg md:text-3xl  ">
           {currentBlog.title}
         </h1>
-        <h3 className="mt-3 text-[8px] md:text-sm text-white/70 flex gap-2 md:gap-5 justify-center md:justify-start ">
+        <h3 className="mt-3 text-[12px] md:text-sm text-white/70 flex gap-2 md:gap-5 justify-center md:justify-start ">
           <span>
             {currentBlog.category}
             </span>
