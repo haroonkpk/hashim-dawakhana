@@ -12,14 +12,7 @@ const blogs = [
     author: "ڈاکٹر عائشہ",
     date: "2024-01-15",
   },
-  {
-    id: 3,
-    title: "صحت مند طرز زندگی کی ٹپس",
-    image: "/realestate.jpg",
-    category: "لائف اسٹائل",
-    author: "ہربلسٹ یوسف",
-    date: "2024-02-01",
-  },
+  
   {
     id: 4,
     title: "روایتی ہربل حکمت",
