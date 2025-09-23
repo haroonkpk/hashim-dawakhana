@@ -12,7 +12,14 @@ const blogs = [
     author: "ڈاکٹر عائشہ",
     date: "2024-01-15",
   },
-  
+  {
+    id: 3,
+    title: "صحت مند طرز زندگی کی ٹپس",
+    image: "/realestate.jpg",
+    category: "لائف اسٹائل",
+    author: "ہربلسٹ یوسف",
+    date: "2024-02-01",
+  },
   {
     id: 4,
     title: "روایتی ہربل حکمت",
@@ -156,6 +163,14 @@ const blogs = [
     category: "خون کی صحت",
     author: "ہربلسٹ اقبال",
     date: "2024-08-25",
+  },
+  {
+    id: 22,
+    title: "دماغی دباؤ کم کرنے والے نسخے",
+    image: "/finance.jpg",
+    category: "ذہنی دباؤ",
+    author: "ڈاکٹر ثاقب",
+    date: "2024-09-05",
   },
   {
     id: 23,
