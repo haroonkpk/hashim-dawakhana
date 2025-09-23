@@ -158,14 +158,6 @@ const blogs = [
     date: "2024-08-25",
   },
   {
-    id: 22,
-    title: "دماغی دباؤ کم کرنے والے نسخے",
-    image: "/finance.jpg",
-    category: "ذہنی دباؤ",
-    author: "ڈاکٹر ثاقب",
-    date: "2024-09-05",
-  },
-  {
     id: 23,
     title: "قدرتی حسن کے راز",
     image: "/Oil.jpg",
