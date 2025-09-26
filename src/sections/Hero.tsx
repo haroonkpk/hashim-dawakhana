@@ -83,36 +83,30 @@ export const Hero = () => {
       {/* Overlay Green Box */}
       <div
         className="absolute -bottom-16 md:-bottom-22  bg-[#389958] text-white px-6 py-5 lg:py-10 text-center sm:text-start 
-             w-[90vw] md:w-[70%] lg:w-[70%] rounded-sm"
+             w-[90vw] md:w-[70%] lg:w-[70%]"
         dir="rtl"
         style={{ lineHeight: "1.6" }}
       >
-        <h1 className="text-lg md:text-3xl  ">
-          {currentBlog.title}
-        </h1>
+        <h1 className="text-lg md:text-3xl  ">{currentBlog.title}</h1>
         <h3 className="mt-3 text-[12px] md:text-sm text-white/70 flex gap-2 md:gap-5 justify-center md:justify-start ">
-          <span>
-            {currentBlog.category}
-            </span>
-          <span>
-            {currentBlog.date}
-            </span>
+          <span>{currentBlog.category}</span>
+          <span>{currentBlog.date}</span>
         </h3>
       </div>
 
       {/* Navigation Arrows */}
       <button
         onClick={handlePrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white/80 p-2 rounded-full text-green-600"
+        className="absolute left-4 top-1/2 -translate-y-1/2 backdrop-blur-2xl text-white bg-gray-100/40 p-2 rounded-full shadow-sm"
       >
-        <ChevronLeft size={28} />
+        <ChevronLeft size={25} />
       </button>
 
       <button
         onClick={handleNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white/80 p-2 rounded-full text-green-600"
+        className="absolute right-4 top-1/2 -translate-y-1/2 backdrop-blur-2xl text-white bg-gray-100/40 p-2 rounded-full shadow-sm"
       >
-        <ChevronRight size={28} />
+        <ChevronRight size={25} />
       </button>
     </section>
   );
