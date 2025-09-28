@@ -2,35 +2,71 @@
 import { BlogCard } from "@/components/BlogCard";
 import { Sidebar } from "@/components/Sidebar";
 import { useState } from "react";
+import {Blog} from "@/types/blogs"
 
 // data/blogs.ts
-export const blogs = [
+export const blogs: Blog[] = [
   {
     slug: "first-blog",
-    title: "Mera Pehla Blog",
-    content: "Ye mera pehla blog hy jo Next.js per bana...",
+    title: "میرا پہلا بلاگ",
     image: "/finance.jpg",
-    category: "Next.js",
-    author: "Haroon",
-    date: "2025-09-01",
+    category: "نیکسٹ جے ایس",
+    author: "ہارون",
+    date: "۲۰۲۵-۰۹-۰۱",
+    blocks: [
+      { type: "heading", content: "مختلف" },
+      {
+        type: "paragraph",
+        content: "یہ میرا پہلا بلاگ ہے جو نیکسٹ جے ایس پر بنا...",
+      },
+      {
+        type: "image",
+        content: { src: "/finance.jpg", alt: "فائنانس تصویر" },
+      },
+      {
+        type: "table",
+        content: {
+          headers: ["نام", "قدر"],
+          rows: [
+            [
+              "نیکسٹ جے ایس",
+              "ر یکٹ فریم ورکیکٹ فریم ورکیکٹ فریم ورکیکٹ فریم ورک",
+            ],
+            ["ایس ای او", "آپٹیمائزیشن"],
+          ],
+        },
+      },
+    ],
   },
   {
     slug: "second-blog",
-    title: "Dusra Blog",
-    content: "Ye dusra blog hy jisme hum SEO seekhenge...",
+    title: "دوسرا بلاگ",
     image: "/Oil.jpg",
-    category: "SEO",
-    author: "Haroon",
-    date: "2025-09-05",
+    category: "ایس ای او",
+    author: "ہارون",
+    date: "۲۰۲۵-۰۹-۰۵",
+    blocks: [
+      { type: "heading", content: "ایس ای او کی بنیادی باتیں" },
+      {
+        type: "paragraph",
+        content: "یہ دوسرا بلاگ ہے جس میں ہم ایس ای او سیکھیں گے...",
+      },
+    ],
   },
   {
     slug: "third-blog",
-    title: "Teesra Blog",
-    content: "Ye teesra blog hy jisme hum Next.js samjhenge...",
+    title: "تیسرا بلاگ",
     image: "/realestate.jpg",
-    category: "Web Dev",
-    author: "Haroon",
-    date: "2025-09-10",
+    category: "ویب ڈویلپمنٹ",
+    author: "ہارون",
+    date: "۲۰۲۵-۰۹-۱۰",
+    blocks: [
+      { type: "heading", content: "نیکسٹ جے ایس کے تصورات" },
+      {
+        type: "paragraph",
+        content: "یہ تیسرا بلاگ ہے جس میں ہم نیکسٹ جے ایس سمجھیں گے...",
+      },
+    ],
   },
 ];
 
