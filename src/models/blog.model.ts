@@ -13,10 +13,7 @@ export const blogs: Blog[] = [
     date: "2025-09-01",
     blocks: [
       { type: "heading", content: "Muhtalip" },
-      {
-        type: "paragraph",
-        content: "Ye mera pehla blog hy jo Next.js per bana...",
-      },
+      { type: "paragraph", content: "Ye mera pehla blog hy jo Next.js per bana..." },
       {
         type: "image",
         content: { src: "/finance.jpg", alt: "Finance Image" },
@@ -42,10 +39,7 @@ export const blogs: Blog[] = [
     date: "2025-09-05",
     blocks: [
       { type: "heading", content: "SEO Basics" },
-      {
-        type: "paragraph",
-        content: "Ye dusra blog hy jisme hum SEO seekhenge...",
-      },
+      { type: "paragraph", content: "Ye dusra blog hy jisme hum SEO seekhenge..." },
     ],
   },
   {
@@ -57,10 +51,7 @@ export const blogs: Blog[] = [
     date: "2025-09-10",
     blocks: [
       { type: "heading", content: "Next.js Concepts" },
-      {
-        type: "paragraph",
-        content: "Ye teesra blog hy jisme hum Next.js samjhenge...",
-      },
+      { type: "paragraph", content: "Ye teesra blog hy jisme hum Next.js samjhenge..." },
     ],
   },
 ];
