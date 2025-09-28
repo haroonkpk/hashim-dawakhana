@@ -6,28 +6,31 @@ import { Blog } from "@/types/blogs";
 export const blogs: Blog[] = [
   {
     slug: "first-blog",
-    title: "Mera Pehla Blog",
+    title: "میرا پہلا بلاگ",
     image: "/finance.jpg",
-    category: "Next.js",
-    author: "Haroon",
-    date: "2025-09-01",
+    category: "نیکسٹ جے ایس",
+    author: "ہارون",
+    date: "۲۰۲۵-۰۹-۰۱",
     blocks: [
-      { type: "heading", content: "Muhtalip" },
+      { type: "heading", content: "مختلف" },
       {
         type: "paragraph",
-        content: "Ye mera pehla blog hy jo Next.js per bana...",
+        content: "یہ میرا پہلا بلاگ ہے جو نیکسٹ جے ایس پر بنا...",
       },
       {
         type: "image",
-        content: { src: "/finance.jpg", alt: "Finance Image" },
+        content: { src: "/finance.jpg", alt: "فائنانس تصویر" },
       },
       {
         type: "table",
         content: {
-          headers: ["Name", "Value"],
+          headers: ["نام", "قدر"],
           rows: [
-            ["Next.js", "React Framework"],
-            ["SEO", "Optimization"],
+            [
+              "نیکسٹ جے ایس",
+              "ر یکٹ فریم ورکیکٹ فریم ورکیکٹ فریم ورکیکٹ فریم ورک",
+            ],
+            ["ایس ای او", "آپٹیمائزیشن"],
           ],
         },
       },
@@ -35,35 +38,36 @@ export const blogs: Blog[] = [
   },
   {
     slug: "second-blog",
-    title: "Dusra Blog",
+    title: "دوسرا بلاگ",
     image: "/Oil.jpg",
-    category: "SEO",
-    author: "Haroon",
-    date: "2025-09-05",
+    category: "ایس ای او",
+    author: "ہارون",
+    date: "۲۰۲۵-۰۹-۰۵",
     blocks: [
-      { type: "heading", content: "SEO Basics" },
+      { type: "heading", content: "ایس ای او کی بنیادی باتیں" },
       {
         type: "paragraph",
-        content: "Ye dusra blog hy jisme hum SEO seekhenge...",
+        content: "یہ دوسرا بلاگ ہے جس میں ہم ایس ای او سیکھیں گے...",
       },
     ],
   },
   {
     slug: "third-blog",
-    title: "Teesra Blog",
+    title: "تیسرا بلاگ",
     image: "/realestate.jpg",
-    category: "Web Dev",
-    author: "Haroon",
-    date: "2025-09-10",
+    category: "ویب ڈویلپمنٹ",
+    author: "ہارون",
+    date: "۲۰۲۵-۰۹-۱۰",
     blocks: [
-      { type: "heading", content: "Next.js Concepts" },
+      { type: "heading", content: "نیکسٹ جے ایس کے تصورات" },
       {
         type: "paragraph",
-        content: "Ye teesra blog hy jisme hum Next.js samjhenge...",
+        content: "یہ تیسرا بلاگ ہے جس میں ہم نیکسٹ جے ایس سمجھیں گے...",
       },
     ],
   },
 ];
+
 
 //  Static paths (sab blogs ke slug build time per generate)
 export async function generateStaticParams() {

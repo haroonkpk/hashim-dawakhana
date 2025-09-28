@@ -34,7 +34,7 @@ const categories = [
 export const Sidebar = () => {
   return (
     <div className="space-y-8">
-      <nav className="w-[300px] h-fit border border-gray-200 p-6" dir="rtl">
+      <nav className="w-full sm:w-[300px] h-fit border border-gray-200 p-6" dir="rtl">
         <h4 className="text-lg font-bold pb-2 mb-3">
           <span>کیٹگریز</span>
         </h4>
@@ -58,7 +58,7 @@ export const Sidebar = () => {
           ))}
         </ul>
       </nav>
-      <div className="sticky top-10 z-10 w-[300px] h-[350px]">
+      <div className="sticky top-10 z-10 w-full sm:w-[300px] h-[350px]">
         <Image
           src="/finance.jpg"
           alt="hashim dawakhana"

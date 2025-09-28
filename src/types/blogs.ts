@@ -1,5 +1,5 @@
 // types/blog.ts
-export type BlogBlock =
+export type BlogBlockTypes =
   | { type: "heading"; content: string }
   | { type: "paragraph"; content: string }
   | { type: "image"; content: { src: string; alt: string } }
@@ -12,5 +12,5 @@ export interface Blog {
   category: string;
   author: string;
   date: string;
-  blocks: BlogBlock[];
+  blocks: BlogBlockTypes[];
 }
