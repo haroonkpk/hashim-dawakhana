@@ -24,5 +24,11 @@ li,
 a,
 #menu-main li a,
 #menu-main li span {
-  font-family: 'nafees-nastaleeq',serif !important
+  font-family: 'nafees-nastaleeq', serif !important
+}
+
+@layer base {
+  ::placeholder {
+    @apply text-gray-500;
+  }
 }
