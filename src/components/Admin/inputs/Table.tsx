@@ -7,7 +7,7 @@ export function Table() {
   });
   return (
     <div className="space-y-4">
-      <h2 className="font-semibold">ٹیبل ہیڈرز:</h2>
+      <h2 className="text-gray-700 text-lg font-extrabold">ٹیبل ہیڈرز</h2>
       <div className="flex gap-2">
         {table.headers.map((h, i) => (
           <input
@@ -25,7 +25,7 @@ export function Table() {
         ))}
       </div>
 
-      <h2 className="font-semibold mt-4">ٹیبل رووز:</h2>
+      <h2 className="font-semibold mt-4">ٹیبل رووز</h2>
       {table.rows.map((row, rowIndex) => (
         <div key={rowIndex} className="flex gap-2 mb-2">
           {row.map((cell, cellIndex) => (
@@ -55,7 +55,7 @@ export function Table() {
         }
         className="px-4 py-2 bg-blue-600 text-white rounded-lg"
       >
-        ➕ رو شامل کریں
+        رو شامل کریں
       </button>
     </div>
   );
