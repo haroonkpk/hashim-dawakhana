@@ -86,7 +86,7 @@ export default function AdminPanel() {
           <button
             type="button"
             className="mt-6 px-6 py-2 bg-green-600 text-white rounded-lg"
-            onClick={() => alert("🚀 Block Save Ho Gya (DB Later)")}
+            onClick={() => alert("Block Save Ho Gya (DB Later)")}
           >
             بلاک شامل کریں
           </button>
