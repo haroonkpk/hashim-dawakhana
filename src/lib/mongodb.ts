@@ -1,25 +1,31 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI as string;
+const MONGODB_URI: string = process.env.MONGODB_URI as string;
 
 if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI in .env.local");
 }
 
-// connection caching (Next.js hot reload ke liye)
-let cached = (global as any).mongoose;
 
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+declare global {
+  var mongooseCache:
+    | { conn: Mongoose | null; promise: Promise<Mongoose> | null }
+    | undefined;
 }
 
-async function dbConnect() {
+
+const cached: { conn: Mongoose | null; promise: Promise<Mongoose> | null } =
+  global.mongooseCache || { conn: null, promise: null };
+
+global.mongooseCache = cached;
+
+async function dbConnect(): Promise<Mongoose> {
   if (cached.conn) {
     return cached.conn;
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose);
+    cached.promise = mongoose.connect(MONGODB_URI).then((m) => m);
   }
 
   cached.conn = await cached.promise;
