@@ -6,16 +6,16 @@ if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI in .env.local");
 }
 
-
 declare global {
+  // globalThis define karna zaroori hai
+  // warna ESLint aur TS error karenge
+  // kyunki 'global' Node.js specific hai
   var mongooseCache:
     | { conn: Mongoose | null; promise: Promise<Mongoose> | null }
     | undefined;
 }
 
-
-const cached: { conn: Mongoose | null; promise: Promise<Mongoose> | null } =
-  global.mongooseCache || { conn: null, promise: null };
+const cached = global.mongooseCache || { conn: null, promise: null };
 
 global.mongooseCache = cached;
 
