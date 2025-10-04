@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-
-export function Paragraph() {
+interface slugProps {
+  slug: string;
+}
+export const Paragraph: React.FC<slugProps> = ({ slug }) => {
   const [paragraph, setParagraph] = useState("");
 
   return (
@@ -26,4 +28,4 @@ export function Paragraph() {
       </button>
     </div>
   );
-}
+};

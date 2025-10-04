@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-
-export const Heading = () => {
+interface slugProps {
+  slug: string;
+}
+export const Heading: React.FC<slugProps> = ({ slug }) => {
   const [Heading, setHeading] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -19,9 +21,12 @@ export const Heading = () => {
   return (
     <div className="flex flex-col space-y-4">
       <label className="flex flex-col gap-2">
-        <span className="text-gray-700 text-lg font-extrabold">
-          ہیڈنگ درج کریں
-        </span>
+        <div className="flex justify-between">
+          <span className="text-gray-700 text-lg font-extrabold">
+            ہیڈنگ درج کریں
+          </span>
+          <span className="text-gray-700 text-lg font-extrabold">{slug}</span>
+        </div>
         <input
           type="text"
           dir="rtl"

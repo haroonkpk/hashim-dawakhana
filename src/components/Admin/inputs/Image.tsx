@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent } from "react";
 
 interface ImageState {
   src: string;
   alt: string;
 }
-
-export const ImageUpload = () => {
+interface slugProps {
+  slug: string;
+}
+export const ImageUpload: React.FC<slugProps> = ({ slug }) => {
   const [image, setImage] = useState<ImageState>({ src: "", alt: "" });
 
   // file ko base64 me convert karna

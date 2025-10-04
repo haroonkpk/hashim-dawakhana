@@ -1,6 +1,8 @@
-import { useState } from "react";
-
-export function Table() {
+import React, { useState } from "react";
+interface slugProps {
+  slug: string;
+}
+export const Table: React.FC<slugProps> = ({ slug }) => {
   const [table, setTable] = useState({
     headers: ["", ""],
     rows: [["", ""]],
@@ -67,4 +69,4 @@ export function Table() {
       </button>
     </div>
   );
-}
+};
