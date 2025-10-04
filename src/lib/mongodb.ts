@@ -15,7 +15,6 @@ const globalWithMongoose = global as typeof globalThis & {
   mongoose?: MongooseCache;
 };
 
-// ✅ Yeh line fix karegi undefined issue
 const cached: MongooseCache = globalWithMongoose.mongoose ?? { conn: null, promise: null };
 globalWithMongoose.mongoose = cached;
 

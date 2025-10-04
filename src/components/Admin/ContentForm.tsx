@@ -36,7 +36,7 @@ export default function ContentForm() {
   };
 
   return (
-    <div className="h-screen">
+    <div className="flex flex-col items-center gap-y-20">
       {/* top bar */}
       <div className="w-full flex justify-center">
         <div
@@ -84,23 +84,13 @@ export default function ContentForm() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-10 bg-gray-100 overflow-y-auto">
-        <h1 className="text-3xl font-bold mb-6">ایڈمن پینل</h1>
-        <div
-          className="bg-white rounded-xl p-6 space-y-6"
-          style={{ boxShadow: "0 8px 20px rgba(22,163,74,0.2)" }}
-        >
-          {renderForm()}
+      <div
+        className="w-2xl bg-white rounded-xl p-6 space-y-6"
+        style={{ boxShadow: "0 8px 20px rgba(22,163,74,0.2)" }}
+      >
+        {renderForm()}
 
-          {/* Submit Button */}
-          <button
-            type="button"
-            className="mt-6 px-6 py-2 bg-[#389958] text-white rounded-lg"
-            onClick={() => alert("Block Save Ho Gya (DB Later)")}
-          >
-            بلاک شامل کریں
-          </button>
-        </div>
+        
       </div>
     </div>
   );

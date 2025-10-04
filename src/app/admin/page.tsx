@@ -1,6 +1,7 @@
 "use client";
 
 import ContentForm from "@/components/Admin/ContentForm";
+import { CreateBlog } from "@/components/Admin/CreateBlog";
 import { useState } from "react";
 
 const AdminPanel = () => {
@@ -39,9 +40,11 @@ const AdminPanel = () => {
 
       {/* Content Area */}
       <main className="flex-1 bg-gray-100 p-6 overflow-y-auto">
+        <div className="w-full flex flex-col justify-center items-center ">
         {activeTab === "category" && <Category />}
         {activeTab === "blog" && <Blog />}
-        {activeTab === "content" && <ContentForm />}
+        {activeTab === "content" && <ContentFormfun />}
+        </div>
       </main>
     </div>
   );
@@ -56,10 +59,8 @@ const Category = () => (
 );
 
 const Blog = () => (
-  <section>
-    <h1 className="text-xl font-bold mb-4"> نیا بلاگ بنائیں</h1>
-    {/* بلاگ کا فارم */}
-  </section>
+  <CreateBlog/>
 );
+const ContentFormfun = () => <ContentForm />;
 
 export default AdminPanel;

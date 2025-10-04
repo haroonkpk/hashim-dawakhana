@@ -6,7 +6,7 @@ export function Table() {
     rows: [["", ""]],
   });
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 flex flex-col">
       <h2 className="text-gray-700 text-lg font-extrabold">ٹیبل ہیڈرز</h2>
       <div className="flex gap-2">
         {table.headers.map((h, i) => (
@@ -56,6 +56,14 @@ export function Table() {
         className="px-4 py-2 bg-blue-600 text-white rounded-lg"
       >
         رو شامل کریں
+      </button>
+      {/* Submit Button */}
+      <button
+        type="button"
+        className="mt-6 px-6 py-2 bg-[#389958] text-white rounded-lg"
+        onClick={() => alert("Block Save Ho Gya (DB Later)")}
+      >
+        بلاک شامل کریں
       </button>
     </div>
   );

@@ -23,7 +23,7 @@ export const ImageUpload = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col space-y-4">
       {/* image upload */}
       <label className="flex flex-col gap-2">
         <span className="text-gray-700 text-lg font-extrabold">
@@ -60,6 +60,14 @@ export const ImageUpload = () => {
           />
         </div>
       )}
+      {/* Submit Button */}
+      <button
+        type="button"
+        className="mt-6 px-6 py-2 bg-[#389958] text-white rounded-lg"
+        onClick={() => alert("Block Save Ho Gya (DB Later)")}
+      >
+        بلاک شامل کریں
+      </button>
     </div>
   );
 };
