@@ -6,24 +6,23 @@ if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI in .env.local");
 }
 
-declare global {
-  // `globalThis` ka use karna industry standard hai
-  // Node.js aur browser dono environments ke liye safe hai
-  // eslint rules disable karne ki zaroorat nahi
-  var mongooseCache:
-    | { conn: Mongoose | null; promise: Promise<Mongoose> | null }
-    | undefined;
+interface MongooseCache {
+  conn: Mongoose | null;
+  promise: Promise<Mongoose> | null;
 }
 
-const cached = globalThis.mongooseCache ?? {
-  conn: null,
-  promise: null,
+const globalWithMongoose = global as typeof globalThis & {
+  mongoose?: MongooseCache;
 };
 
-globalThis.mongooseCache = cached;
+// ✅ Yeh line fix karegi undefined issue
+const cached: MongooseCache = globalWithMongoose.mongoose ?? { conn: null, promise: null };
+globalWithMongoose.mongoose = cached;
 
 async function dbConnect(): Promise<Mongoose> {
-  if (cached.conn) return cached.conn;
+  if (cached.conn) {
+    return cached.conn;
+  }
 
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI).then((m) => m);

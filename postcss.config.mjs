@@ -4,11 +4,11 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        urdu: ["var(--font-nastaliq)", "serif"], // 👈 ye CSS variable use karega
+        urdu: ["var(--font-nastaliq)", "serif"],
       },
     },
   },
-  plugins: ["@tailwindcss/postcss"], // Tumhara lagaw
+  plugins: ["@tailwindcss/postcss"], 
 };
 
 export default config;

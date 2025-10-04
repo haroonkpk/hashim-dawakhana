@@ -9,12 +9,15 @@ export async function GET() {
     await dbConnect();
     const blogs = await Blog.find({});
     return NextResponse.json(blogs);
-  } catch (error) {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
     return NextResponse.json({ error: "Database error" }, { status: 500 });
   }
 }
 
-//  POST a new blog
+// POST a new blog
 export async function POST(req: Request) {
   try {
     await dbConnect();
@@ -28,7 +31,6 @@ export async function POST(req: Request) {
 
     const slug = generateSlug(title);
 
-    //  save blog
     const blog = new Blog({
       title,
       slug,
@@ -41,7 +43,10 @@ export async function POST(req: Request) {
     await blog.save();
 
     return NextResponse.json(blog, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: "Database error" }, { status: 500 });
   }
 }
