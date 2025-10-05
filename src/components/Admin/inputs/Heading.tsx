@@ -1,32 +1,40 @@
 import React, { useState } from "react";
-interface slugProps {
-  slug: string;
+import { Blog } from "@/types/blogs";
+
+interface HeadingProps {
+  Id: string;
+  onBlogUpdate: (blog: Blog) => void;
 }
-export const Heading: React.FC<slugProps> = ({ slug }) => {
+
+export const Heading: React.FC<HeadingProps> = ({ Id, onBlogUpdate }) => {
   const [Heading, setHeading] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const res = await fetch("/api/blogs", {
-      method: "POST",
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(Heading),
+      body: JSON.stringify({
+        Id,
+        block: {
+          type: "heading",
+          content: Heading,
+        },
+      }),
     });
-
+    setHeading("");
     const data = await res.json();
     console.log("Response:", data);
+    onBlogUpdate(data);
   };
 
   return (
     <div className="flex flex-col space-y-4">
       <label className="flex flex-col gap-2">
-        <div className="flex justify-between">
-          <span className="text-gray-700 text-lg font-extrabold">
-            ہیڈنگ درج کریں
-          </span>
-          <span className="text-gray-700 text-lg font-extrabold">{slug}</span>
-        </div>
+        <span className="text-gray-700 text-lg font-extrabold">
+          ہیڈنگ درج کریں
+        </span>
         <input
           type="text"
           dir="rtl"

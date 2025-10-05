@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     await dbConnect();
 
     const body = await req.json();
-    const { title, image, category, author, blocks } = body;
+    const { title, image, category, author } = body;
 
     if (!title) {
       return NextResponse.json({ error: "Title is required" }, { status: 400 });
@@ -37,12 +37,47 @@ export async function POST(req: Request) {
       image,
       category,
       author,
-      blocks,
-    });
+    }); 
 
     await blog.save();
 
     return NextResponse.json(blog, { status: 201 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: "Database error" }, { status: 500 });
+  }
+}
+
+
+// PUT — Add new blocks to an existing blog
+export async function PUT(req: Request) {
+  try {
+    await dbConnect();
+
+    const body = await req.json();
+    const { Id, block } = body;
+
+    if (!Id || !block) {
+      return NextResponse.json(
+        { error: "Id and blocks are required" },
+        { status: 400 }
+      );
+    }
+
+    // Add new blocks without removing existing ones
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      Id,
+      { $push: { blocks: { $each: [block] } } },
+      { new: true } // return updated document
+    );
+
+    if (!updatedBlog) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(updatedBlog, { status: 200 });
   } catch (error: unknown) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

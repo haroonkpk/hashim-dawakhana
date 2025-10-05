@@ -1,12 +1,37 @@
 import React, { useState } from "react";
-interface slugProps {
-  slug: string;
+import { Blog } from "@/types/blogs";
+
+interface TableProps {
+  Id: string;
+  onBlogUpdate: (blog: Blog) => void;
 }
-export const Table: React.FC<slugProps> = ({ slug }) => {
+
+export const Table: React.FC<TableProps> = ({ Id, onBlogUpdate }) => {
   const [table, setTable] = useState({
     headers: ["", ""],
     rows: [["", ""]],
   });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const res = await fetch("/api/blogs", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        Id,
+        block: {
+          type: "table",
+          content: table,
+        },
+      }),
+    });
+
+    const data = await res.json();
+    onBlogUpdate(data);
+    setTable({ headers: ["", ""], rows: [["", ""]] });
+  };
+
   return (
     <div className="space-y-4 flex flex-col">
       <h2 className="text-gray-700 text-lg font-extrabold">ٹیبل ہیڈرز</h2>
@@ -59,11 +84,12 @@ export const Table: React.FC<slugProps> = ({ slug }) => {
       >
         رو شامل کریں
       </button>
+
       {/* Submit Button */}
       <button
-        type="button"
+        type="submit"
+        onClick={handleSubmit}
         className="mt-6 px-6 py-2 bg-[#389958] text-white rounded-lg"
-        onClick={() => alert("Block Save Ho Gya (DB Later)")}
       >
         بلاک شامل کریں
       </button>

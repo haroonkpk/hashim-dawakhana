@@ -1,20 +1,26 @@
 "use client";
-
 import React, { useState, ChangeEvent } from "react";
+import { Blog } from "@/types/blogs";
 
 interface ImageState {
   src: string;
   alt: string;
 }
-interface slugProps {
-  slug: string;
-}
-export const ImageUpload: React.FC<slugProps> = ({ slug }) => {
-  const [image, setImage] = useState<ImageState>({ src: "", alt: "" });
 
-  // file ko base64 me convert karna
+interface ImageUploadProps {
+  Id: string;
+  onBlogUpdate: (blog: Blog) => void;
+}
+
+export const ImageUpload: React.FC<ImageUploadProps> = ({
+  Id,
+  onBlogUpdate,
+}) => {
+  const [image, setImage] = useState<ImageState>({ src: "", alt: "" });
+  const [loading, setLoading] = useState(false);
+
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]; // safe optional chaining
+    const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -24,9 +30,43 @@ export const ImageUpload: React.FC<slugProps> = ({ slug }) => {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!image.src) return alert("پہلے تصویر منتخب کریں");
+
+    setLoading(true);
+
+    // Step 1: Upload to Cloudinary
+    const uploadRes = await fetch("/api/upload", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: image.src }),
+    });
+
+    const uploadData = await uploadRes.json();
+    const imageUrl = uploadData.url;
+
+    // Step 2: Save in Blog document
+    const blogRes = await fetch("/api/blogs", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        Id,
+        block: {
+          type: "image",
+          content: { src: imageUrl, alt: image.alt },
+        },
+      }),
+    });
+
+    const data = await blogRes.json();
+    onBlogUpdate(data);
+    setImage({ src: "", alt: "" });
+    setLoading(false);
+  };
+
   return (
     <div className="flex flex-col space-y-4">
-      {/* image upload */}
       <label className="flex flex-col gap-2">
         <span className="text-gray-700 text-lg font-extrabold">
           تصویر منتخب کریں
@@ -35,40 +75,35 @@ export const ImageUpload: React.FC<slugProps> = ({ slug }) => {
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+          className="border rounded-lg p-2"
         />
       </label>
 
-      {/* alt text */}
       <label className="flex flex-col gap-2">
         <span className="text-gray-700">تصویر کی وضاحت (alt):</span>
         <input
           type="text"
           value={image.alt}
           onChange={(e) => setImage({ ...image, alt: e.target.value })}
-          className="mt-1 block w-full border border-gray-300 rounded-lg p-2 outline-green-600"
-          placeholder="تصویر کے بارے میں لکھیں"
+          className="border rounded-lg p-2"
         />
       </label>
 
-      {/* preview */}
       {image.src && (
-        <div className="mt-4">
-          <p className="text-gray-700 font-bold mb-2">پیش منظر:</p>
-          <img
-            src={image.src}
-            alt={image.alt || "تصویر"}
-            className="w-40 h-40 object-cover rounded-lg border"
-          />
-        </div>
+        <img
+          src={image.src}
+          alt={image.alt}
+          className="w-40 h-40 object-cover rounded-lg border"
+        />
       )}
-      {/* Submit Button */}
+
       <button
-        type="button"
-        className="mt-6 px-6 py-2 bg-[#389958] text-white rounded-lg"
-        onClick={() => alert("Block Save Ho Gya (DB Later)")}
+        type="submit"
+        onClick={handleSubmit}
+        disabled={loading}
+        className="px-6 py-2 bg-[#389958] text-white rounded-lg"
       >
-        بلاک شامل کریں
+        {loading ? "اپ لوڈ ہو رہا ہے..." : "بلاک شامل کریں"}
       </button>
     </div>
   );
