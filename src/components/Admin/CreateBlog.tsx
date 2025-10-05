@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, ChangeEvent } from "react";
+import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 
 export const CreateBlog = () => {
@@ -21,7 +22,6 @@ export const CreateBlog = () => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string>("");
 
-  // Fetch categories 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -35,12 +35,10 @@ export const CreateBlog = () => {
     fetchCategories();
   }, []);
 
-  // handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // handle image change + preview
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -50,7 +48,6 @@ export const CreateBlog = () => {
     }
   };
 
-  // upload + submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedCategory) return alert("براہ کرم زمرہ منتخب کریں!");
@@ -58,7 +55,6 @@ export const CreateBlog = () => {
 
     setLoading(true);
     try {
-      // Step 1: Upload to Cloudinary
       const uploadRes = await fetch("/api/upload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -68,7 +64,6 @@ export const CreateBlog = () => {
       const uploadData = await uploadRes.json();
       const imageUrl = uploadData.url;
 
-      // Step 2: Create blog
       const res = await fetch("/api/blogs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -94,29 +89,29 @@ export const CreateBlog = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl space-y-6 bg-white p-6 rounded-xl shadow-md">
-      <h2 className="text-2xl font-extrabold text-gray-800 text-center">
+    <div className="w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-6">
+      <h2 className="text-3xl font-semibold text-center text-gray-800">
         نیا بلاگ بنائیں
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-5" dir="rtl">
+      <form onSubmit={handleSubmit} dir="rtl" className="space-y-6">
         {/* Category Dropdown */}
         <div className="flex flex-col gap-2">
-          <span className="text-gray-700 text-lg font-extrabold">
+          <label className="text-gray-700 font-medium text-base">
             کیٹیگری منتخب کریں
-          </span>
-          <div className="bg-[#389958] text-white flex items-center py-3 px-4 gap-3 rounded-lg relative">
+          </label>
+          <div className="relative">
             <button
               type="button"
               onClick={() => setOpenDropdown(!openDropdown)}
-              className="flex items-center justify-between w-full text-white"
+              className="w-full border border-gray-300 bg-gray-50 rounded-lg px-4 py-2 flex items-center justify-between text-gray-700 hover:bg-gray-100 transition"
             >
-              {selectedCategory ? selectedCategory.name : "کیٹیگری منتخب کریں"}
-              <ChevronDown size={18} />
+              {selectedCategory ? selectedCategory.name : "زمرہ منتخب کریں"}
+              <ChevronDown size={18} className="text-gray-500" />
             </button>
 
             {openDropdown && (
-              <div className="absolute top-[110%] right-0 bg-white text-[#389958] rounded-md shadow-lg w-full z-20 max-h-56 overflow-y-auto">
+              <div className="absolute top-full mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-md z-20 max-h-52 overflow-y-auto">
                 {categories.map((cat) => (
                   <div
                     key={cat._id}
@@ -124,7 +119,7 @@ export const CreateBlog = () => {
                       setSelectedCategory(cat);
                       setOpenDropdown(false);
                     }}
-                    className="px-4 py-2 hover:bg-[#e5f6eb] cursor-pointer transition"
+                    className="px-4 py-2 hover:bg-green-50 text-gray-700 cursor-pointer transition"
                   >
                     {cat.name}
                   </div>
@@ -134,41 +129,43 @@ export const CreateBlog = () => {
           </div>
         </div>
 
-        {/* Blog Title */}
-        <label className="flex flex-col gap-2">
-          <span className="text-gray-700 text-lg font-extrabold">
+        {/* Title */}
+        <div className="flex flex-col gap-2">
+          <label className="text-gray-700 font-medium text-base">
             عنوان درج کریں
-          </span>
+          </label>
           <input
             type="text"
             name="title"
             value={form.title}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
             placeholder="یہاں بلاگ کا عنوان لکھیں..."
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none bg-gray-50"
           />
-        </label>
+        </div>
 
         {/* Image Upload */}
-        <label className="flex flex-col gap-3">
-          <span className="text-gray-700 text-lg font-extrabold">
+        <div className="flex flex-col gap-2">
+          <label className="text-gray-700 font-medium text-base">
             تصویر منتخب کریں
-          </span>
-
+          </label>
           <div
-            className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
+            className={`border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer transition ${
               preview
-                ? "border-green-500 bg-green-50"
+                ? "border-green-400 bg-green-50"
                 : "border-gray-300 hover:border-green-400 hover:bg-gray-50"
             }`}
             onClick={() => document.getElementById("fileInput")?.click()}
           >
             {preview ? (
-              <img
-                src={preview}
-                alt="preview"
-                className="w-48 h-48 object-cover rounded-lg shadow-md"
-              />
+              <div className="relative w-40 h-40">
+                <Image
+                  src={preview}
+                  alt="preview"
+                  fill
+                  className="object-cover rounded-lg shadow-sm"
+                />
+              </div>
             ) : (
               <>
                 <svg
@@ -177,11 +174,11 @@ export const CreateBlog = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth={1.5}
                 >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    strokeWidth={1.5}
                     d="M3 16l4-4a3 3 0 014 0l5 5m-1-1l2 2M3 7h3m12 0h3m-9-4h.01M12 3v18"
                   />
                 </svg>
@@ -189,7 +186,6 @@ export const CreateBlog = () => {
               </>
             )}
           </div>
-
           <input
             id="fileInput"
             type="file"
@@ -197,28 +193,28 @@ export const CreateBlog = () => {
             onChange={handleImageChange}
             className="hidden"
           />
-        </label>
+        </div>
 
         {/* Author */}
-        <label className="flex flex-col gap-2">
-          <span className="text-gray-700 text-lg font-extrabold">
+        <div className="flex flex-col gap-2">
+          <label className="text-gray-700 font-medium text-base">
             مصنف کا نام
-          </span>
+          </label>
           <input
             type="text"
             name="author"
             value={form.author}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
             placeholder="یہاں مصنف کا نام لکھیں..."
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none bg-gray-50"
           />
-        </label>
+        </div>
 
         {/* Submit */}
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2 bg-[#389958] text-white rounded-lg hover:bg-[#2f7e49] transition"
+          className="w-full py-3 bg-[#389958] text-white font-semibold rounded-lg hover:bg-green-600 transition disabled:bg-gray-300"
         >
           {loading ? "محفوظ کیا جا رہا ہے..." : "بلاگ محفوظ کریں"}
         </button>

@@ -3,12 +3,32 @@
 import { CategoryForm } from "@/components/Admin/CategoryForm";
 import ContentForm from "@/components/Admin/ContentForm";
 import { CreateBlog } from "@/components/Admin/CreateBlog";
-import { useState } from "react";
+import { useState, useEffect, useState as useClientState } from "react";
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState("category");
+  const [isMobile, setIsMobile] = useClientState(false);
 
-  // Sidebar Links (urdu)
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100 px-6 text-center">
+        <p className="text-lg font-bold text-gray-700 leading-relaxed">
+           یہ صفحہ موبائل کے لیے دستیاب نہیں ہے۔ <br />
+          براہ کرم اسے اپنے لیپ ٹاپ یا کمپیوٹر پر کھولیں۔
+        </p>
+      </div>
+    );
+  }
+
   const tabs = [
     { id: "category", label: "کیٹیگری بنائیں" },
     { id: "blog", label: "نیا بلاگ بنائیں" },
@@ -17,9 +37,9 @@ const AdminPanel = () => {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 bg-[#389958] text-white p-4 space-y-6">
-        <h2 className="text-2xl font-bold">ایڈمن پینل</h2>
+      {/* Fixed Sidebar */}
+      <aside className="w-64 bg-[#389958] text-white p-4 space-y-6 fixed top-0 right-0 h-full">
+        <h2 className="text-2xl font-bold text-center mb-6">ایڈمن پینل</h2>
         <ul className="space-y-2">
           {tabs.map((tab) => (
             <li key={tab.id}>
@@ -39,21 +59,16 @@ const AdminPanel = () => {
         </ul>
       </aside>
 
-      {/* Content Area */}
-      <main className="flex-1 bg-gray-100 p-6 overflow-y-auto">
-        <div className="w-full flex flex-col justify-center items-center ">
+      {/* Scrollable Content Area */}
+      <main className="flex-1 bg-gray-100 p-6 mr-64 overflow-y-auto">
+        <div className="w-full flex flex-col justify-center items-center">
           {activeTab === "category" && <CategoryForm />}
-          {activeTab === "blog" && <Blog />}
-          {activeTab === "content" && <ContentFormfun />}
+          {activeTab === "blog" && <CreateBlog />}
+          {activeTab === "content" && <ContentForm />}
         </div>
       </main>
     </div>
   );
 };
-
-const Blog = () => (
-  <CreateBlog/>
-);
-const ContentFormfun = () => <ContentForm />;
 
 export default AdminPanel;
