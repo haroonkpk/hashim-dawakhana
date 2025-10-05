@@ -12,12 +12,8 @@ import {
   Table as TableIcon,
   ChevronDown,
 } from "lucide-react";
-
-interface Blog {
-  _id: string;
-  title: string;
-  image: string;
-}
+import { BlogPreview } from "./BlogPreview";
+import { Blog } from "@/types/blogs";
 
 export default function ContentForm() {
   const [selectedBlock, setSelectedBlock] = useState<string>("heading");
@@ -26,26 +22,72 @@ export default function ContentForm() {
 
   const blogs: Blog[] = [
     {
-      _id: "1",
-      title: "Nature Blog",
-      image:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=100&q=80",
+      _id: 1,
+      slug: "first-blog",
+      title: "میرا پہلا بلاگ",
+      image: "/finance.jpg",
+      category: "نیکسٹ جے ایس",
+      author: "ہارون",
+      date: "۲۰۲۵-۰۹-۰۱",
+      blocks: [
+        { type: "heading", content: "مختلف" },
+        {
+          type: "paragraph",
+          content: "یہ میرا پہلا بلاگ ہے جو نیکسٹ جے ایس پر بنا...",
+        },
+        {
+          type: "image",
+          content: { src: "/finance.jpg", alt: "فائنانس تصویر" },
+        },
+        {
+          type: "table",
+          content: {
+            headers: ["نام", "قدر"],
+            rows: [
+              [
+                "نیکسٹ جے ایس",
+                "ر یکٹ فریم ورکیکٹ فریم ورکیکٹ فریم ورکیکٹ فریم ورک",
+              ],
+              ["ایس ای او", "آپٹیمائزیشن"],
+            ],
+          },
+        },
+      ],
     },
     {
-      _id: "2",
-      title: "Tech Trends",
-      image:
-        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=100&q=80",
+      _id: 2,
+      slug: "second-blog",
+      title: "دوسرا بلاگ",
+      image: "/Oil.jpg",
+      category: "ایس ای او",
+      author: "ہارون",
+      date: "۲۰۲۵-۰۹-۰۵",
+      blocks: [
+        { type: "heading", content: "ایس ای او کی بنیادی باتیں" },
+        {
+          type: "paragraph",
+          content: "یہ دوسرا بلاگ ہے جس میں ہم ایس ای او سیکھیں گے...",
+        },
+      ],
     },
     {
-      _id: "3",
-      title: "Travel Diaries",
-      image:
-        "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=100&q=80",
+      _id: 3,
+      slug: "third-blog",
+      title: "تیسرا بلاگ",
+      image: "/realestate.jpg",
+      category: "ویب ڈویلپمنٹ",
+      author: "ہارون",
+      date: "۲۰۲۵-۰۹-۱۰",
+      blocks: [
+        { type: "heading", content: "نیکسٹ جے ایس کے تصورات" },
+        {
+          type: "paragraph",
+          content: "یہ تیسرا بلاگ ہے جس میں ہم نیکسٹ جے ایس سمجھیں گے...",
+        },
+      ],
     },
   ];
 
-  // 👇 ab slug simple string hai, object nahi
   const renderForm = (slug: string | undefined) => {
     if (!slug) return <p>براہ کرم کوئی بلاگ منتخب کریں</p>;
 
@@ -64,7 +106,7 @@ export default function ContentForm() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-y-20">
+    <div className="flex flex-col gap-y-20">
       {/* top bar */}
       <div className="w-full flex justify-center-safe gap-x-2 relative">
         {/* buttons */}
@@ -162,12 +204,18 @@ export default function ContentForm() {
         </div>
       </div>
 
-      {/* main content */}
-      <div
-        className="w-2xl bg-white rounded-xl p-6 space-y-6"
-        style={{ boxShadow: "0 8px 20px rgba(22,163,74,0.2)" }}
-      >
-        {renderForm(selectedBlog?.title)}
+      <div className="w-full flex flex-col justify-center items-center gap-y-20">
+        {/* forms */}
+        <div
+          className="w-xl h-fit bg-white rounded-xl p-6 space-y-6"
+          style={{ boxShadow: "0 8px 20px rgba(22,163,74,0.2)" }}
+        >
+          {renderForm(selectedBlog?.slug)}
+        </div>
+        {/* preview */}
+        <div className="w-full p-10">
+          <BlogPreview blog={selectedBlog} />
+        </div>
       </div>
     </div>
   );

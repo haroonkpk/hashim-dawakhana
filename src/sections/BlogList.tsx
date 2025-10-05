@@ -2,11 +2,12 @@
 import { BlogCard } from "@/components/BlogCard";
 import { Sidebar } from "@/components/Sidebar";
 import { useState } from "react";
-import {Blog} from "@/types/blogs"
+import { Blog } from "@/types/blogs";
 
 // data/blogs.ts
 export const blogs: Blog[] = [
   {
+    _id: 1,
     slug: "first-blog",
     title: "میرا پہلا بلاگ",
     image: "/finance.jpg",
@@ -39,6 +40,7 @@ export const blogs: Blog[] = [
     ],
   },
   {
+    _id: 2,
     slug: "second-blog",
     title: "دوسرا بلاگ",
     image: "/Oil.jpg",
@@ -54,6 +56,7 @@ export const blogs: Blog[] = [
     ],
   },
   {
+    _id: 3,
     slug: "third-blog",
     title: "تیسرا بلاگ",
     image: "/realestate.jpg",

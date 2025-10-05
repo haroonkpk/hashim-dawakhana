@@ -6,6 +6,7 @@ export type BlogBlockTypes =
   | { type: "table"; content: { headers: string[]; rows: string[][] } };
 
 export interface Blog {
+  _id:number,
   slug: string;
   title: string;
   image: string;

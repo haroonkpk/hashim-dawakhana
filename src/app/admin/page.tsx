@@ -17,7 +17,7 @@ const AdminPanel = () => {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#389958] text-white p-4 space-y-6">
+      <aside className="w-46 bg-[#389958] text-white p-4 space-y-6">
         <h2 className="text-2xl font-bold">ایڈمن پینل</h2>
         <ul className="space-y-2">
           {tabs.map((tab) => (
