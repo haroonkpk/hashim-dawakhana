@@ -10,11 +10,12 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ url: uploaded.secure_url });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Upload error:", error);
-    return NextResponse.json(
-      { error: "Image upload failed" },
-      { status: 500 }
-    );
+
+    const message =
+      error instanceof Error ? error.message : "Image upload failed";
+
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
