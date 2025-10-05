@@ -21,7 +21,7 @@ export const CreateBlog = () => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string>("");
 
-  // Fetch categories
+  // Fetch categories 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -35,7 +35,7 @@ export const CreateBlog = () => {
     fetchCategories();
   }, []);
 
-  // handle input change
+  // handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
