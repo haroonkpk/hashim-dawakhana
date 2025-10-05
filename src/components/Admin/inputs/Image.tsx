@@ -36,7 +36,6 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
 
     setLoading(true);
 
-    // Step 1: Upload to Cloudinary
     const uploadRes = await fetch("/api/upload", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -46,7 +45,6 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     const uploadData = await uploadRes.json();
     const imageUrl = uploadData.url;
 
-    // Step 2: Save in Blog document
     const blogRes = await fetch("/api/blogs", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -66,45 +64,84 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   };
 
   return (
-    <div className="flex flex-col space-y-4">
-      <label className="flex flex-col gap-2">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-6"
+    >
+      {/* Image Upload */}
+      <label className="flex flex-col gap-3">
         <span className="text-gray-700 text-lg font-extrabold">
           تصویر منتخب کریں
         </span>
+
+        <div
+          className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
+            image.src
+              ? "border-green-500 bg-green-50"
+              : "border-gray-300 hover:border-green-400 hover:bg-gray-50"
+          }`}
+          onClick={() => document.getElementById("fileInput")?.click()}
+        >
+          {image.src ? (
+            <img
+              src={image.src}
+              alt="preview"
+              className="w-48 h-48 object-cover rounded-lg shadow-md"
+            />
+          ) : (
+            <>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-10 w-10 text-gray-400 mb-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 16l4-4a3 3 0 014 0l5 5m-1-1l2 2M3 7h3m12 0h3m-9-4h.01M12 3v18"
+                />
+              </svg>
+              <p className="text-gray-500 text-sm text-center">
+                 تصویر منتخب کریں
+              </p>
+            </>
+          )}
+        </div>
+
         <input
+          id="fileInput"
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="border rounded-lg p-2"
+          className="hidden"
         />
       </label>
 
+      {/* ALT input */}
       <label className="flex flex-col gap-2">
-        <span className="text-gray-700">تصویر کی وضاحت (alt):</span>
+        <span className="text-gray-700 text-sm font-semibold">
+          تصویر کی وضاحت 
+        </span>
         <input
           type="text"
           value={image.alt}
           onChange={(e) => setImage({ ...image, alt: e.target.value })}
-          className="border rounded-lg p-2"
+          placeholder="مثلاً: پہاڑ کا منظر"
+          className="border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all"
         />
       </label>
 
-      {image.src && (
-        <img
-          src={image.src}
-          alt={image.alt}
-          className="w-40 h-40 object-cover rounded-lg border"
-        />
-      )}
-
+      {/* Submit Button */}
       <button
         type="submit"
-        onClick={handleSubmit}
         disabled={loading}
-        className="px-6 py-2 bg-[#389958] text-white rounded-lg"
+        className="px-6 py-3 bg-[#389958] text-white rounded-xl hover:bg-[#2d7a46] transition-all disabled:opacity-70"
       >
         {loading ? "اپ لوڈ ہو رہا ہے..." : "بلاک شامل کریں"}
       </button>
-    </div>
+    </form>
   );
 };
