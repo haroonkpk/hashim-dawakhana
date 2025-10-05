@@ -9,10 +9,14 @@ export const CreateBlog = () => {
     category: "",
     author: "",
   });
+
   const [categories, setCategories] = useState<{ _id: string; name: string }[]>(
     []
   );
-  const [selectedCategory, setSelectedCategory] = useState<string>(null);
+  const [selectedCategory, setSelectedCategory] = useState<{
+    _id: string;
+    name: string;
+  } | null>(null);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string>("");
