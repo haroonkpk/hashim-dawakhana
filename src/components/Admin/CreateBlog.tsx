@@ -12,7 +12,7 @@ export const CreateBlog = () => {
   const [categories, setCategories] = useState<{ _id: string; name: string }[]>(
     []
   );
-  const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>(null);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string>("");
