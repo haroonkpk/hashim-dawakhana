@@ -3,61 +3,49 @@ import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/blog.model";
 import { generateSlug } from "@/lib/utils";
 
-// GET all blogs
+// 🟢 GET — All blogs
 export async function GET() {
   try {
     await dbConnect();
     const blogs = await Blog.find({});
     return NextResponse.json(blogs);
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-    return NextResponse.json({ error: "Database error" }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : "Database error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-// POST a new blog
+// 🟢 POST — Create blog
 export async function POST(req: Request) {
   try {
     await dbConnect();
-
-    const body = await req.json();
-    const { title, image, category, author } = body;
+    const { title, image, category, author } = await req.json();
 
     if (!title) {
-      return NextResponse.json({ error: "Title is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Title is required" },
+        { status: 400 }
+      );
     }
 
     const slug = generateSlug(title);
-
-    const blog = new Blog({
-      title,
-      slug,
-      image,
-      category,
-      author,
-    }); 
-
+    const blog = new Blog({ title, slug, image, category, author });
     await blog.save();
 
     return NextResponse.json(blog, { status: 201 });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-    return NextResponse.json({ error: "Database error" }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : "Database error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-
-// PUT — Add new blocks to an existing blog
+// 🟢 PUT — Add new block to a blog
 export async function PUT(req: Request) {
   try {
     await dbConnect();
-
-    const body = await req.json();
-    const { Id, block } = body;
+    const { Id, block } = await req.json();
 
     if (!Id || !block) {
       return NextResponse.json(
@@ -66,22 +54,50 @@ export async function PUT(req: Request) {
       );
     }
 
-    // Add new blocks without removing existing ones
     const updatedBlog = await Blog.findByIdAndUpdate(
       Id,
       { $push: { blocks: { $each: [block] } } },
-      { new: true } // return updated document
+      { new: true }
     );
 
     if (!updatedBlog) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
 
-    return NextResponse.json(updatedBlog, { status: 200 });
+    return NextResponse.json(updatedBlog);
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : "Database error";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+// DELETE — Remove blog by ID
+export async function DELETE(req: Request) {
+  try {
+    await dbConnect();
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Blog ID is required" },
+        { status: 400 }
+      );
     }
-    return NextResponse.json({ error: "Database error" }, { status: 500 });
+
+    const deletedBlog = await Blog.findByIdAndDelete(id);
+    if (!deletedBlog) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(
+      { success: true, message: "Blog deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Database error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

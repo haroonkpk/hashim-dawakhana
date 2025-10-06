@@ -22,11 +22,10 @@ export default function ContentForm() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  //  Fetch blogs from backend
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await fetch("/api/blogs"); // <-- your GET API route
+        const res = await fetch("/api/blogs");
         if (!res.ok) throw new Error("Failed to fetch blogs");
         const data = await res.json();
         setBlogs(data);
@@ -39,8 +38,20 @@ export default function ContentForm() {
     fetchBlogs();
   }, []);
 
+  const handleBlogUpdate = (updatedBlog: Blog) => {
+    setSelectedBlog(updatedBlog);
+    setBlogs((prevBlogs) =>
+      prevBlogs.map((b) => (b._id === updatedBlog._id ? updatedBlog : b))
+    );
+  };
+
   const renderForm = (_id: string | undefined) => {
-    if (!_id) return <p>براہ کرم کوئی بلاگ منتخب کریں</p>;
+    if (!_id)
+      return (
+        <p className="text-center text-gray-600 font-medium">
+          براہ کرم کوئی بلاگ منتخب کریں
+        </p>
+      );
 
     switch (selectedBlock) {
       case "heading":
@@ -63,127 +74,124 @@ export default function ContentForm() {
       </div>
     );
 
-  const handleBlogUpdate = (updatedBlog: Blog) => {
-    setSelectedBlog(updatedBlog);
-
- setBlogs((prevBlogs) =>
-   prevBlogs.map((b) => (b._id === updatedBlog._id ? updatedBlog : b))
- );
-
-    
-  };
-
   return (
-    <div className="flex flex-col gap-y-20">
-      {/* top bar */}
-      <div className="w-full flex justify-center-safe gap-x-2 relative">
-        {/* buttons */}
+    <div className="w-full min-h-screen flex flex-col items-center py-10">
+      {/* Container Box */}
+      <div className="w-full max-w-2xl rounded-2xl shadow-sm border border-gray-100">
+        {/* Green Top Navbar */}
         <div
           style={{ boxShadow: "0 8px 20px rgba(22,163,74,0.2)" }}
-          className="bg-[#389958] text-white flex justify-center items-center py-6 px-10 gap-6 rounded-r-2xl"
+          className="bg-[#389958] text-white flex justify-between items-center py-5 px-6 gap-6 rounded-t-2xl relative"
         >
-          <button
-            className={`p-3 rounded-full ${
-              selectedBlock === "heading"
-                ? "bg-gray-100/90 text-[#389958]"
-                : "hover:bg-white/20"
-            }`}
-            onClick={() => setSelectedBlock("heading")}
-          >
-            <Type size={20} />
-          </button>
+          {/* Left Side Icons */}
+          <div className="flex gap-4">
+            <button
+              className={`p-3 rounded-full transition ${
+                selectedBlock === "heading"
+                  ? "bg-gray-100/90 text-[#389958]"
+                  : "hover:bg-white/20"
+              }`}
+              onClick={() => setSelectedBlock("heading")}
+            >
+              <Type size={22} />
+            </button>
 
-          <button
-            className={`p-3 rounded-full ${
-              selectedBlock === "paragraph"
-                ? "bg-gray-100/90 text-[#389958]"
-                : "hover:bg-white/20"
-            }`}
-            onClick={() => setSelectedBlock("paragraph")}
-          >
-            <FileText size={20} />
-          </button>
+            <button
+              className={`p-3 rounded-full transition ${
+                selectedBlock === "paragraph"
+                  ? "bg-gray-100/90 text-[#389958]"
+                  : "hover:bg-white/20"
+              }`}
+              onClick={() => setSelectedBlock("paragraph")}
+            >
+              <FileText size={22} />
+            </button>
 
-          <button
-            className={`p-3 rounded-full ${
-              selectedBlock === "image"
-                ? "bg-gray-100/90 text-[#389958]"
-                : "hover:bg-white/20"
-            }`}
-            onClick={() => setSelectedBlock("image")}
-          >
-            <ImageIcon size={20} />
-          </button>
+            <button
+              className={`p-3 rounded-full transition ${
+                selectedBlock === "image"
+                  ? "bg-gray-100/90 text-[#389958]"
+                  : "hover:bg-white/20"
+              }`}
+              onClick={() => setSelectedBlock("image")}
+            >
+              <ImageIcon size={22} />
+            </button>
 
-          <button
-            className={`p-3 rounded-full ${
-              selectedBlock === "table"
-                ? "bg-gray-100/90 text-[#389958]"
-                : "hover:bg-white/20"
-            }`}
-            onClick={() => setSelectedBlock("table")}
-          >
-            <TableIcon size={20} />
-          </button>
-        </div>
+            <button
+              className={`p-3 rounded-full transition ${
+                selectedBlock === "table"
+                  ? "bg-gray-100/90 text-[#389958]"
+                  : "hover:bg-white/20"
+              }`}
+              onClick={() => setSelectedBlock("table")}
+            >
+              <TableIcon size={22} />
+            </button>
+          </div>
 
-        {/* custom dropdown */}
-        <div className="bg-[#389958] text-white flex items-center py-6 px-8 gap-3 rounded-l-2xl relative">
-          <button
-            onClick={() => setOpenDropdown(!openDropdown)}
-            className="flex items-center gap-2 text-white px-4 py-2 rounded-md hover:bg-white/10 transition"
-          >
-            {selectedBlog ? (
-              <>
-                <img
-                  src={selectedBlog.image}
-                  alt={selectedBlog.title}
-                  className="w-6 h-6 rounded-full object-cover"
-                />
-                <span>{selectedBlog.title}</span>
-              </>
-            ) : (
-              <span>Select blog</span>
-            )}
-            <ChevronDown size={18} />
-          </button>
-
-          {openDropdown && (
-            <div className="absolute top-[85%] right-0 bg-white text-[#389958] rounded-md shadow-lg w-56 z-20">
-              {blogs.map((blog) => (
-                <div
-                  key={blog._id}
-                  onClick={() => {
-                    setSelectedBlog(blog);
-                    setOpenDropdown(false);
-                  }}
-                  className="flex items-center gap-3 px-4 py-2 hover:bg-[#e5f6eb] cursor-pointer transition"
-                >
+          {/* Dropdown (Right Side) */}
+          <div className="relative">
+            <button
+              onClick={() => setOpenDropdown(!openDropdown)}
+              className="flex items-center gap-2 bg-white/10 hover:bg-white/20 transition px-6 py-4 rounded-lg"
+            >
+              {selectedBlog ? (
+                <>
                   <img
-                    src={blog.image}
-                    alt={blog.title}
-                    className="w-8 h-8 rounded-md object-cover"
+                    src={selectedBlog.image}
+                    alt={selectedBlog.title}
+                    className="w-6 h-6 rounded-full object-cover"
                   />
-                  <span>{blog.title}</span>
-                </div>
-              ))}
+                  <span>{selectedBlog.title}</span>
+                </>
+              ) : (
+                <span>بلاگ منتخب کریں</span>
+              )}
+              <ChevronDown size={18} />
+            </button>
+
+            {openDropdown && (
+              <div className="absolute top-[110%] right-0 bg-white text-[#389958] rounded-md shadow-lg w-64 z-20 overflow-hidden">
+                {blogs.map((blog) => (
+                  <div
+                    key={blog._id}
+                    onClick={() => {
+                      setSelectedBlog(blog);
+                      setOpenDropdown(false);
+                    }}
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-[#e5f6eb] cursor-pointer transition"
+                  >
+                    <img
+                      src={blog.image}
+                      alt={blog.title}
+                      className="w-8 h-8 rounded-md object-cover"
+                    />
+                    <span>{blog.title}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* White Content Box */}
+        <div className=" bg-white p-8 space-y-10 rounded-b-2xl" dir="rtl">
+          {/* Editor Section */}
+          <div className="w-full">{renderForm(selectedBlog?._id)}</div>
+
+          {/* Divider */}
+          <hr className="mt-20 border-1 border-dashed border-green-600" />
+
+          {/* Preview Section */}
+          <div className="w-full">
+            <h3 className="text-lg font-semibold text-gray-700 mb-3">
+              بلاگ کا پری ویو
+            </h3>
+            <div className="border border-gray-200 rounded-lg p-6 bg-gray-50">
+              <BlogPreview blog={selectedBlog} />
             </div>
-          )}
-        </div>
-      </div>
-
-      <div className="w-full flex flex-col justify-center items-center gap-y-20">
-        {/* forms */}
-        <div
-          className="w-xl h-fit bg-white rounded-xl p-6 space-y-6"
-          style={{ boxShadow: "0 8px 20px rgba(22,163,74,0.2)" }}
-        >
-          {renderForm(selectedBlog?._id)}
-        </div>
-
-        {/* preview */}
-        <div className="w-full p-10">
-          <BlogPreview blog={selectedBlog} />
+          </div>
         </div>
       </div>
     </div>
