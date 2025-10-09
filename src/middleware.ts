@@ -5,7 +5,7 @@ import { verifyToken } from "@/lib/jwt";
 export function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
 
-  // 🧠 Skip API routes
+  //   Skip API routes
   if (path.startsWith("/api")) return NextResponse.next();
 
   const token = req.cookies.get("token")?.value;
@@ -13,14 +13,14 @@ export function middleware(req: NextRequest) {
 
   const publicPaths = ["/admin/login", "/admin/create-admin"];
 
-  // 🛡️ Protect all /admin routes except public ones
+  //   Protect all /admin routes except public ones
   if (path.startsWith("/admin") && !publicPaths.includes(path)) {
     if (!verified) {
       return NextResponse.redirect(new URL("/admin/login", req.url));
     }
   }
 
-  // 🔄 If logged in and visiting login page, redirect to dashboard
+  //  If logged in and visiting login page, redirect to dashboard
   if (path === "/admin/login" && verified) {
     return NextResponse.redirect(new URL("/admin", req.url));
   }
@@ -29,5 +29,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  runtime: "nodejs", 
+  runtime: "nodejs",  
 };
