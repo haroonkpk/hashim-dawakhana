@@ -25,7 +25,7 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/${params.slug}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/getBySlug/${params.slug}`,
     { next: { revalidate: 3600 } }
   );
 
@@ -63,7 +63,7 @@ export default async function BlogDetail({
   params: { slug: string };
 }) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/${params.slug}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/getBySlug/${params.slug}`,
     { next: { revalidate: 3600 } }
   );
 
