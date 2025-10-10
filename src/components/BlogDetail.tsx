@@ -63,7 +63,7 @@ export default function BlogDetailSection({ blog }: BlogDetailProps) {
 
       {/* Blog Content */}
       <div className="w-full flex justify-center my-32 ">
-        <div className="w-full max-w-[85%] gap-y-8 sm:justify-between flex flex-col sm:flex-row ">
+        <div className="w-full max-w-[85%] gap-y-8 lg:justify-between flex flex-col lg:flex-row ">
           <BlogBlocks blogBlocks={blog}/>
 
           {/* Sidebar */}
