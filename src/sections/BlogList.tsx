@@ -10,35 +10,38 @@ export default function BlogSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
- useEffect(() => {
-   const checkAndFetchBlogs = async () => {
-     const cached = localStorage.getItem("blogs");
-     const cachedTime = localStorage.getItem("blogsUpdatedAt");
+  useEffect(() => {
+    const cached = localStorage.getItem("blogs");
+    const cachedTime = localStorage.getItem("blogsUpdatedAt");
 
-     try {
-       const res = await fetch("/api/blogs/meta"); 
-       const { updatedAt } = await res.json();
+    if (cached) {
+      setBlogs(JSON.parse(cached));
+      setLoading(false);
+    }
 
-       if (!cached || cachedTime !== updatedAt) {
-         const res2 = await fetch("/api/blogs");
-         const data = await res2.json();
-         localStorage.setItem("blogs", JSON.stringify(data));
-         localStorage.setItem("blogsUpdatedAt", updatedAt);
-         setBlogs(data);
-       } else {
-         setBlogs(JSON.parse(cached));
-       }
-     } catch (err) {
-       console.error(err);
-       setError(true);
-     } finally {
-       setLoading(false);
-     }
-   };
+    // checking and updating latest data in background 
+    const checkAndFetchBlogs = async () => {
+      try {
+        const res = await fetch("/api/blogs/meta");
+        const { updatedAt } = await res.json();
 
-   checkAndFetchBlogs();
- }, []);
+        if (!cached || cachedTime !== updatedAt) {
+          const res2 = await fetch("/api/blogs");
+          const data = await res2.json();
+          localStorage.setItem("blogs", JSON.stringify(data));
+          localStorage.setItem("blogsUpdatedAt", updatedAt);
+          setBlogs(data);
+        }
+      } catch (err) {
+        console.error(err);
+        if (!cached) setError(true); 
+      } finally {
+        if (!cached) setLoading(false); 
+      }
+    };
 
+    checkAndFetchBlogs();
+  }, []);
 
   if (loading)
     return (
