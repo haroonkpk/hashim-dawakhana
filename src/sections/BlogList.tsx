@@ -10,32 +10,35 @@ export default function BlogSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    const cachedBlogs = localStorage.getItem("blogs");
+ useEffect(() => {
+   const checkAndFetchBlogs = async () => {
+     const cached = localStorage.getItem("blogs");
+     const cachedTime = localStorage.getItem("blogsUpdatedAt");
 
-    if (cachedBlogs) {
-      // 👇 already cached data load karo
-      setBlogs(JSON.parse(cachedBlogs));
-      setLoading(false);
-    } else {
-      // 👇 fetch only once (first time)
-      const getBlogs = async () => {
-        try {
-          const res = await fetch("/api/blogs", { cache: "no-store" });
-          if (!res.ok) throw new Error("Failed to fetch blogs");
-          const data = await res.json();
-          setBlogs(data);
-          localStorage.setItem("blogs", JSON.stringify(data)); // cache store
-        } catch (err) {
-          console.error(err);
-          setError(true);
-        } finally {
-          setLoading(false);
-        }
-      };
-      getBlogs();
-    }
-  }, []);
+     try {
+       const res = await fetch("/api/blogs/meta"); 
+       const { updatedAt } = await res.json();
+
+       if (!cached || cachedTime !== updatedAt) {
+         const res2 = await fetch("/api/blogs");
+         const data = await res2.json();
+         localStorage.setItem("blogs", JSON.stringify(data));
+         localStorage.setItem("blogsUpdatedAt", updatedAt);
+         setBlogs(data);
+       } else {
+         setBlogs(JSON.parse(cached));
+       }
+     } catch (err) {
+       console.error(err);
+       setError(true);
+     } finally {
+       setLoading(false);
+     }
+   };
+
+   checkAndFetchBlogs();
+ }, []);
+
 
   if (loading)
     return (
