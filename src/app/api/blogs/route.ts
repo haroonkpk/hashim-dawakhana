@@ -7,12 +7,15 @@ import { generateSlug } from "@/lib/utils";
 export async function GET() {
   try {
     await dbConnect();
-    const blogs = await Blog.find({});
-    return NextResponse.json(blogs);
-  } catch (error: unknown) {
-    const message =
-      error instanceof Error ? error.message : "Database error";
-    return NextResponse.json({ error: message }, { status: 500 });
+
+    const blogs = await Blog.find({}, "slug title image category author  date").lean();
+
+    return NextResponse.json(blogs, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error fetching blogs", error },
+      { status: 500 }
+    );
   }
 }
 
