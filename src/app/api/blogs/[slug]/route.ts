@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Blog from "@/models/blog.model";
 import connectDB from "@/lib/mongodb";
 
-export async function GET(req: Request, { params }: { params: { slug: string } }) {
+export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
   try {
     await connectDB();
     const blog = await Blog.findOne({ slug: params.slug });
