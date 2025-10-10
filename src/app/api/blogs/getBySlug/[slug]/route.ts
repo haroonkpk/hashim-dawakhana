@@ -4,16 +4,16 @@ import connectDB from "@/lib/mongodb";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  context: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await context.params; // ✅ now awaited
+
     await connectDB();
 
-    const blog = await Blog.findOne({ slug: params.slug });
-
-    if (!blog) {
+    const blog = await Blog.findOne({ slug });
+    if (!blog)
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
-    }
 
     return NextResponse.json(blog, { status: 200 });
   } catch (error) {

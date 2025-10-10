@@ -34,9 +34,8 @@ export async function generateMetadata({
   }
 
   const blog: Blog = await res.json();
-  const firstParagraph =
-    blog.blocks.find((b) => b.type === "paragraph")?.content || "";
-
+ const firstParagraph =
+   blog?.blocks?.find((b) => b.type === "paragraph")?.content || "";
   return {
     title: blog.title,
     description: firstParagraph.slice(0, 150),
