@@ -10,8 +10,11 @@ export async function GET(
     const { slug } = await context.params; 
 
     await connectDB();
-
-    const blog = await Blog.findOne({ slug });
+ 
+    const blog = await Blog.findOne({ slug })
+  .populate("category", "name slug")
+  .lean();
+  
     if (!blog)
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
 

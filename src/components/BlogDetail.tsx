@@ -22,7 +22,7 @@ export default function BlogDetailSection({ blog }: BlogDetailProps) {
               headline: blog.title,
               description: blog.blocks
                 .find((b) => b.type === "paragraph")
-                ?.content.slice(0, 150), // ✅ SEO description from first paragraph
+                ?.content.slice(0, 150), // SEO description from first paragraph
               image: `https://yourdomain.com${blog.image}`,
               author: {
                 "@type": "Person",

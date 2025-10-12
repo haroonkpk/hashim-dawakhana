@@ -10,7 +10,7 @@ export async function GET() {
     await dbConnect();
 
     const blogs = await Blog.find({}, "slug title image category author date")
-  .populate("category", "name slug") // <-- Add this
+  .populate("category", "name slug") 
   .lean();
 
 
