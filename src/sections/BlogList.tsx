@@ -6,7 +6,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { Blog } from "@/types/blogs";
 
 export default function BlogSection() {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [blogs, setBlogs] = useState<Blog[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -19,7 +19,6 @@ export default function BlogSection() {
       setLoading(false);
     }
 
-    // checking and updating latest data in background 
     const checkAndFetchBlogs = async () => {
       try {
         const res = await fetch("/api/blogs/meta");
@@ -34,15 +33,16 @@ export default function BlogSection() {
         }
       } catch (err) {
         console.error(err);
-        if (!cached) setError(true); 
+        if (!cached) setError(true);
       } finally {
-        if (!cached) setLoading(false); 
+        if (!cached) setLoading(false);
       }
     };
 
     checkAndFetchBlogs();
   }, []);
 
+  // 🔹 Loading state
   if (loading)
     return (
       <div className="text-center py-20 text-gray-500">
@@ -50,9 +50,11 @@ export default function BlogSection() {
       </div>
     );
 
-  if (error || blogs.length === 0)
+  // 🔹 Error or empty state
+  if (error || !blogs || blogs.length === 0)
     return <div className="text-center py-20">کوئی بلاگ نہیں ملا</div>;
 
+  // 🔹 Main content
   return (
     <section className="relative flex flex-col lg:flex-row gap-8 py-15 md:py-20 px-6 md:mt-4 md:p-20">
       <div className="grid gap-10 sm:grid-cols-2">
