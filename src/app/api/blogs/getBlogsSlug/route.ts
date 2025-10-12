@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import Blog from "@/models/blog.model";
-import connectDB from "@/lib/mongodb";
+import dbConnect from "@/lib/mongodb";
 
 export async function GET() {
   try {
-    await connectDB();
+    await dbConnect();
 
     const blogs = await Blog.find({}, "slug title").lean();
 

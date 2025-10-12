@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Blog from "@/models/blog.model";
-import connectDB from "@/lib/mongodb";
+import dbConnect from "@/lib/mongodb";
 
 export async function GET(
   request: NextRequest,
@@ -9,7 +9,7 @@ export async function GET(
   try {
     const { slug } = await context.params; 
 
-    await connectDB();
+    await dbConnect();
  
     const blog = await Blog.findOne({ slug })
   .populate("category", "name slug")
