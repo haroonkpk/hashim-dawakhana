@@ -7,15 +7,32 @@ export const revalidate = 3600;
 
 // 1️generateStaticParams()
 export async function generateStaticParams() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs`, {
-    next: { revalidate: 3600 },
-  });
-  const blogs: Blog[] = await res.json();
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs`, {
+      next: { revalidate: 3600 },
+    });
 
-  return blogs.map((b) => ({
-    slug: b.slug,
-  }));
+    
+    if (!res.ok) {
+      console.error("Failed to fetch blogs:", res.statusText);
+      return [];
+    }
+
+    const data = await res.json();
+
+    if (!Array.isArray(data)) {
+      console.error("Expected array but got:", data);
+      return [];
+    }
+
+    return data.map((b) => ({ slug: b.slug }));
+  } catch (err) {
+    console.error("Error in generateStaticParams:", err);
+    return [];
+  }
 }
+
+
 
 
 // SEO metadata for each blog
