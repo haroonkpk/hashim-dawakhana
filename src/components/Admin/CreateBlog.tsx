@@ -89,7 +89,7 @@ export const CreateBlog = () => {
           title: form.title,
           image: imageUrl,
           author: form.author,
-          category: selectedCategory.name,
+          category: selectedCategory._id,
         }),
       });
       const data = await res.json();

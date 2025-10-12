@@ -54,7 +54,7 @@ export default function BlogDetailSection({ blog }: BlogDetailProps) {
           >
             <h1 className="text-lg md:text-3xl">{blog.title}</h1>
             <h3 className="mt-3 text-[12px] md:text-sm text-white/70 flex gap-2 md:gap-5 justify-center md:justify-start">
-              <span>{blog.category}</span>
+              <span>{blog.category.name}</span>
               <span>{blog.date}</span>
             </h3>
           </div>

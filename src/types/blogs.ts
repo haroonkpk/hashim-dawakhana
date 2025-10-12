@@ -10,7 +10,11 @@ export interface Blog {
   slug: string;
   title: string;
   image: string;
-  category: string;
+   category: {
+    _id: string;
+    name: string;
+    slug: string;
+  }; 
   author: string;
   date: string;
   blocks: BlogBlockTypes[];

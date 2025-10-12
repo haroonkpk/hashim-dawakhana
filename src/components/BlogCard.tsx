@@ -1,14 +1,6 @@
   import Image from "next/image";
   import Link from "next/link";
-
-  type Blog = {
-    slug: string;
-    image: string;
-    title: string;
-    category: string;
-    author: string;
-    date: string;
-  };
+import { Blog } from "@/types/blogs";
 
   interface BlogCardProps {
     blog: Blog;
@@ -35,13 +27,11 @@
             height={300}
             className="w-full h-48 sm:h-46 lg:h-54 object-cover transition-transform duration-500 hover:scale-105"
           />
-          <span className="absolute top-2 left-2 sm:top-3 sm:left-3 backdrop-blur-2xl text-white bg-gray-100/40 text-[8px] sm:text-xs px-3 py-2 rounded-full shadow-md">
-            {blog.category}
-          </span>
         </div>
 
         <div className="p-5">
-          <h2 className="text-md py-1 text-green-600 md:text-gray-800 md:hover:text-green-600 font-semibold mb-2 line-clamp-2">
+          <h2 className="text-sm text-green-500">{blog.category.name}</h2>
+          <h2 className="text-xl py-1 text-green-600 md:text-gray-800 md:hover:text-green-600 font-semibold mb-2 line-clamp-2">
             {blog.title}
           </h2>
           <div className="flex items-center justify-between text-sm text-gray-500">

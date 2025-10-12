@@ -2,13 +2,17 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/blog.model";
 import { generateSlug } from "@/lib/utils";
+import mongoose from "mongoose";
 
 // 🟢 GET — All blogs
 export async function GET() {
   try {
     await dbConnect();
 
-    const blogs = await Blog.find({}, "slug title image category author  date").lean();
+    const blogs = await Blog.find({}, "slug title image category author date")
+  .populate("category", "name slug") // <-- Add this
+  .lean();
+
 
     return NextResponse.json(blogs, { status: 200 });
   } catch (error) {
@@ -32,8 +36,15 @@ export async function POST(req: Request) {
       );
     }
 
-    const slug = generateSlug(title);
-    const blog = new Blog({ title, slug, image, category, author });
+
+    const blog = new Blog({
+     title,
+     slug: generateSlug(title),
+     image,
+     category: category, 
+     author,
+    });
+
     await blog.save();
 
     return NextResponse.json(blog, { status: 201 });
@@ -56,6 +67,9 @@ export async function PUT(req: Request) {
         { status: 400 }
       );
     }
+         if (!mongoose.Types.ObjectId.isValid(Id)) {
+  return NextResponse.json({ error: "Invalid Blog ID" }, { status: 400 });
+}
 
     const updatedBlog = await Blog.findByIdAndUpdate(
       Id,
@@ -88,6 +102,10 @@ export async function DELETE(req: Request) {
         { status: 400 }
       );
     }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+  return NextResponse.json({ error: "Invalid Blog ID" }, { status: 400 });
+}
+
 
     const deletedBlog = await Blog.findByIdAndDelete(id);
     if (!deletedBlog) {
