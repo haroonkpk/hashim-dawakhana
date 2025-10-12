@@ -27,6 +27,7 @@ export default function BlogSection() {
         if (!cached || cachedTime !== updatedAt) {
           const res2 = await fetch("/api/blogs");
           const data = await res2.json();
+          console.log(data);
           localStorage.setItem("blogs", JSON.stringify(data));
           localStorage.setItem("blogsUpdatedAt", updatedAt);
           setBlogs(data);
@@ -42,7 +43,7 @@ export default function BlogSection() {
     checkAndFetchBlogs();
   }, []);
 
-  // 🔹 Loading state
+  //  Loading state
   if (loading)
     return (
       <div className="text-center py-20 text-gray-500">
@@ -50,11 +51,11 @@ export default function BlogSection() {
       </div>
     );
 
-  // 🔹 Error or empty state
+  // Error or empty state
   if (error || !blogs || blogs.length === 0)
     return <div className="text-center py-20">کوئی بلاگ نہیں ملا</div>;
 
-  // 🔹 Main content
+  // Main content
   return (
     <section className="relative flex flex-col lg:flex-row gap-8 py-15 md:py-20 px-6 md:mt-4 md:p-20">
       <div className="grid gap-10 sm:grid-cols-2">
