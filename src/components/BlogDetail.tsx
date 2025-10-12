@@ -12,7 +12,7 @@ export default function BlogDetailSection({ blog }: BlogDetailProps) {
   return (
     <div>
       <article>
-        {/* 🟢 JSON-LD Structured Data */}
+        {/*  JSON-LD Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
