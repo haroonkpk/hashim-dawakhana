@@ -50,8 +50,8 @@ export default function BlogSection() {
   return (
     <section className="relative flex flex-col md:flex-row gap-8 py-15 md:py-20 px-6 md:mt-4 md:p-20">
       <div className="grid gap-10 sm:grid-cols-2">
-        {blogs.map((blog) => (
-          <BlogCard key={blog.slug} blog={blog} />
+        {blogs?.map((blog) => (
+          <BlogCard key={blog.title} blog={blog} />
         ))}
       </div>
       <Sidebar />
