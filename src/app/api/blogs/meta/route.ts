@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import Blog from "@/models/blog.model";
-import connectDB from "@/lib/mongodb";
+import dbConnect from "@/lib/mongodb";
 
 export async function GET() {
-  await connectDB();
+  await dbConnect();
   const lastBlog = await Blog.findOne().sort({ updatedAt: -1 });
   return NextResponse.json({ updatedAt: lastBlog?.updatedAt || null });
 }

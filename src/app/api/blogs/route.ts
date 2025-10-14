@@ -13,14 +13,23 @@ export async function GET() {
   .populate("category", "name slug") 
   .lean();
 
-
-    return NextResponse.json(blogs, { status: 200 });
-  } catch (error) {
-    return NextResponse.json(
-      { message: "Error fetching blogs", error },
+  console.log(blogs)
+  if(!blogs){
+     return NextResponse.json(
+      { message: "blog not found" },
       { status: 500 }
     );
   }
+
+    return NextResponse.json(blogs, { status: 200 });
+  } catch (error) {
+  console.error("Error in GET /api/blogs:", error); 
+  return NextResponse.json(
+    { message: "Errorff fetching blogs", error },
+    { status: 500 }
+  );
+}
+
 }
 
 // 🟢 POST — Create blog

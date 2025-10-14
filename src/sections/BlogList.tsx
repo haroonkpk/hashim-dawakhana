@@ -21,15 +21,15 @@ export default function BlogSection() {
 
     const checkAndFetchBlogs = async () => {
       try {
-        const res = await fetch("/api/blogs/meta");
-        const { updatedAt } = await res.json();
-
-        if (!cached || cachedTime !== updatedAt) {
+        // const res = await fetch("/api/blogs/meta");
+        // const { updatedAt } = await res.json();
+// !== updatedAt
+        if (!cached || cachedTime ) {
           const res2 = await fetch("/api/blogs");
           const data = await res2.json();
           console.log(data);
           localStorage.setItem("blogs", JSON.stringify(data));
-          localStorage.setItem("blogsUpdatedAt", updatedAt);
+          // localStorage.setItem("blogsUpdatedAt", updatedAt);
           setBlogs(data);
         }
       } catch (err) {
