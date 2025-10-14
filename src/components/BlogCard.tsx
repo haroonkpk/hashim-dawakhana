@@ -7,7 +7,7 @@ import { Blog } from "@/types/blogs";
   }
 
   export const BlogCard: React.FC<BlogCardProps> = ({ blog }) => (
-    <Link href={`/blogs/${blog.slug}`}>
+    <Link href={`/blogs/${blog?.slug}`}>
       <article
         className="overflow-hidden bg-white transition-transform transform hover:-translate-y-1"
         style={{ boxShadow: "0 2px 6px rgba(0,0,0,0)" }}
