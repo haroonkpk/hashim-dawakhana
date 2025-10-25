@@ -1,9 +1,10 @@
-import { NextResponse } from "next/server";
-import Blog from "@/models/blog.model";
 import dbConnect from "@/lib/mongodb";
+import Meta from "@/models/meta.model";
+import { NextResponse } from "next/server";
+
 
 export async function GET() {
   await dbConnect();
-  const lastBlog = await Blog.findOne().sort({ updatedAt: -1 });
-  return NextResponse.json({ updatedAt: lastBlog?.updatedAt || null });
+  const meta = await Meta.findOne({ key: "blogs" });
+  return NextResponse.json({ updatedAt: meta?.updatedAt || null });
 }

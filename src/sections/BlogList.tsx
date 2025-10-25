@@ -10,31 +10,39 @@ export default function BlogSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    const cachedBlogs = localStorage.getItem("blogs");
+  const fetchBlogs = async () => {
+    try {
+      const resMeta = await fetch("/api/blogs/meta", { cache: "no-store" });
+      const { updatedAt } = await resMeta.json();
 
-    if (cachedBlogs) {
-      // 👇 already cached data load karo
-      setBlogs(JSON.parse(cachedBlogs));
+      const cachedBlogs = localStorage.getItem("blogs");
+      const cachedTime = localStorage.getItem("blogsUpdatedAt");
+
+      if (!cachedBlogs || cachedTime !== updatedAt) {
+        const res = await fetch("/api/blogs", { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to fetch blogs");
+        const data = await res.json();
+
+        setBlogs(data);
+        localStorage.setItem("blogs", JSON.stringify(data));
+        localStorage.setItem("blogsUpdatedAt", updatedAt);
+      } else {
+        setBlogs(JSON.parse(cachedBlogs));
+      }
+    } catch (err) {
+      console.error(err);
+      setError(true);
+    } finally {
       setLoading(false);
-    } else {
-      // 👇 fetch only once (first time)
-      const getBlogs = async () => {
-        try {
-          const res = await fetch("/api/blogs", { cache: "no-store" });
-          if (!res.ok) throw new Error("Failed to fetch blogs");
-          const data = await res.json();
-          setBlogs(data);
-          localStorage.setItem("blogs", JSON.stringify(data)); // cache store
-        } catch (err) {
-          console.error(err);
-          setError(true);
-        } finally {
-          setLoading(false);
-        }
-      };
-      getBlogs();
     }
+  };
+
+  useEffect(() => {
+    fetchBlogs();
+    
+    const interval = setInterval(fetchBlogs, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
   if (loading)
@@ -49,9 +57,9 @@ export default function BlogSection() {
 
   return (
     <section className="relative flex flex-col md:flex-row gap-8 py-15 md:py-20 px-6 md:mt-4 md:p-20">
-      <div className="grid gap-10 sm:grid-cols-2">
+      <div className="grid gap-10 sm:grid-cols-2 2xl:grid-cols-3 flex-1">
         {blogs?.map((blog) => (
-          <BlogCard key={blog.title} blog={blog} />
+          <BlogCard key={blog._id} blog={blog} />
         ))}
       </div>
       <Sidebar />
