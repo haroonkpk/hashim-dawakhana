@@ -12,7 +12,6 @@ export default function BlogSection() {
   const fetchBlogs = async () => {
     try {
       const res = await fetch("/api/blogs");
-      await fetch("/api/subCategory")
       const data = await res.json();
       setBlogs(data);
     } catch (err) {
