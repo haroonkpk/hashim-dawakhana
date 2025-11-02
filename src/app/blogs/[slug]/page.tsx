@@ -8,7 +8,7 @@ export const revalidate = 3600;
 generateStaticParams();
 export async function generateStaticParams() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs`, {
+    const res = await fetch("/api/blogs", {
       next: { revalidate: 3600 },
     });
 
