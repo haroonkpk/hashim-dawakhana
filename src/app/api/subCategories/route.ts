@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import { generateSlug } from "@/lib/utils";
-import SubCategory from "@/models/subCategory.model";
+import { SubCategory } from "@/models";
 
 // GET — all Subcategories (with parent info)
 export async function GET() {

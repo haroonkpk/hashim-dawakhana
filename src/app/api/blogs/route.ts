@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/blog.model";
-import SubCategory from "@/models/subCategory.model"; // <-- add this
 import { generateSlug } from "@/lib/utils";
 import mongoose from "mongoose";
+import { Blog } from "@/models";
 
 //  GET — All blogs
 export async function GET() {
@@ -63,7 +62,6 @@ export async function POST(req: Request) {
   }
 }
 
-// ... (keep PUT/DELETE parts as they are, but consider same error.message pattern)
 // PUT — Add new block to a blog
 export async function PUT(req: Request) {
   try {

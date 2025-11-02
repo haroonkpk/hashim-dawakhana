@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="ur" dir="rtl">
       <body className="min-h-screen flex flex-col">
-        <Navbar/>
+        {/* <Navbar/> */}
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
