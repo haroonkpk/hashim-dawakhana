@@ -3,8 +3,6 @@ import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/blog.model";
 import { generateSlug } from "@/lib/utils";
 import mongoose from "mongoose";
-import { touchMeta } from "@/lib/meta";
-import category from "@/models/category.model";
 
 //  GET — All blogs
 export async function GET() {
@@ -24,7 +22,7 @@ export async function GET() {
   } catch (error) {
     console.error("Error in GET /api/blogs:", error);
     return NextResponse.json(
-      { message: "Errorff fetching blogs", error },
+      { message: "Error fetching blogs", error },
       { status: 500 }
     );
   }
@@ -36,7 +34,7 @@ export async function POST(req: Request) {
     await dbConnect();
     const { title, image, category, author } = await req.json();
 
-    if (!title) {
+    if (!title || !image || !category || !author) {
       return NextResponse.json({ error: "Title is required" }, { status: 400 });
     }
 
@@ -82,7 +80,6 @@ export async function PUT(req: Request) {
     if (!updatedBlog) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
-    await touchMeta("blogs");
     return NextResponse.json(updatedBlog);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Database error";
@@ -108,7 +105,6 @@ export async function DELETE(req: Request) {
     }
 
     const deletedBlog = await Blog.findByIdAndDelete(id);
-    await touchMeta("blogs");
     if (!deletedBlog) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }

@@ -29,7 +29,7 @@ export const CreateBlog = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("/api/categories");
+        const res = await fetch("/api/subCategories");
         const data = await res.json();
         setCategories(data);
       } catch (err) {

@@ -19,9 +19,12 @@ export const CategoryForm = () => {
   // all categories fetch
   const fetchCategories = async () => {
     try {
-      const res = await fetch("/api/categories");
+      const res = await fetch("/api/subCategories");
       const data = await res.json();
+      console.log(data);
+      
       setCategories(data);
+
     } catch (err) {
       console.error(err);
     }
@@ -38,7 +41,7 @@ export const CategoryForm = () => {
     setMessage("");
 
     try {
-      const res = await fetch("/api/categories", {
+      const res = await fetch("/api/subCategories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, parentId }),
@@ -164,7 +167,7 @@ export const CategoryForm = () => {
               >
                 {loading ? "محفوظ کیا جا رہا ہے..." : "کیٹیگری محفوظ کریں"}
               </button>
-            </form> 
+            </form>
           )}
 
           {/* Delete Section */}
