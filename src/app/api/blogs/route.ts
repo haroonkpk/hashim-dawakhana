@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/blog.model";
+import SubCategory from "@/models/subCategory.model"; // <-- add this
 import { generateSlug } from "@/lib/utils";
 import mongoose from "mongoose";
 
@@ -13,16 +14,17 @@ export async function GET() {
       .populate("category", "name slug")
       .lean();
 
-    console.log(blogs);
+    console.log("GET /api/blogs -> found", blogs?.length ?? 0, "blogs");
     if (!blogs) {
       return NextResponse.json({ message: "blog not found" }, { status: 500 });
     }
 
     return NextResponse.json(blogs, { status: 200 });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error in GET /api/blogs:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { message: "Error fetching blogs", error },
+      { message: "Error fetching blogs", error: message },
       { status: 500 }
     );
   }
@@ -32,10 +34,14 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     await dbConnect();
-    const { title, image, category, author } = await req.json();
+    const body = await req.json();
+    console.log("POST /api/blogs body:", body);
+
+    const { title, image, category, author } = body;
 
     if (!title || !image || !category || !author) {
-      return NextResponse.json({ error: "Title is required" }, { status: 400 });
+      console.warn("POST /api/blogs validation failed:", { title, image, category, author });
+      return NextResponse.json({ error: "title, image, category and author are required" }, { status: 400 });
     }
 
     const blog = new Blog({
@@ -48,13 +54,16 @@ export async function POST(req: Request) {
 
     await blog.save();
 
+    console.log("POST /api/blogs created:", blog._id);
     return NextResponse.json(blog, { status: 201 });
   } catch (error: unknown) {
+    console.error("Error in POST /api/blogs:", error);
     const message = error instanceof Error ? error.message : "Database error";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
+// ... (keep PUT/DELETE parts as they are, but consider same error.message pattern)
 // PUT — Add new block to a blog
 export async function PUT(req: Request) {
   try {
