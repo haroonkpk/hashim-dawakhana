@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
+import Image from "next/image";
 
 const categories = [
   {
@@ -11,7 +12,8 @@ const categories = [
     slug: "health",
     links: [
       {
-        title: "رنگ و روشنی سے علاج – قدرتی، سادہ اور مؤثر تھراپی کا مکمل جائزہ",
+        title:
+          "رنگ و روشنی سے علاج – قدرتی، سادہ اور مؤثر تھراپی کا مکمل جائزہ",
         href: "https://blog.kamilherbal.com/health/chromotherapy/",
       },
       {
@@ -44,10 +46,16 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="relative overflow-hidden max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="text-2xl font-bold text-green-700">
-          Hashim <span className="text-emerald-500">Dawakhana</span>
+        <Link href="/">
+          <Image
+            src="/logo.PNG"
+            alt="logo"
+            width={200}
+            height={150}
+            className="absolute -bottom-8"
+          />
         </Link>
 
         {/* Desktop Menu */}
@@ -61,7 +69,9 @@ export default function Navbar() {
             >
               <button className="flex items-center gap-1 hover:text-emerald-600 transition">
                 {cat.name}
-                {cat.links.length > 0 && <ChevronDown size={16} className="mt-1" />}
+                {cat.links.length > 0 && (
+                  <ChevronDown size={16} className="mt-1" />
+                )}
               </button>
 
               {/* Dropdown */}
@@ -120,13 +130,15 @@ export default function Navbar() {
             >
               <div>
                 {/* Header */}
-                <div className="flex justify-between items-center mb-8">
-                  <Link
-                    href="/"
-                    className="text-xl font-bold text-green-700"
-                    onClick={() => setOpen(false)}
-                  >
-                    Hashim <span className="text-emerald-500">Dawakhana</span>
+                <div className="flex justify-between items-center border-b pb-6 border-gray-400 mb-8">
+                  <Link href="/">
+                    <Image
+                      src="/logo.PNG"
+                      alt="logo"
+                      width={200}
+                      height={150}
+                      className="absolute -top-5"
+                    />
                   </Link>
                   <button onClick={() => setOpen(false)}>
                     <X size={24} className="text-gray-700" />

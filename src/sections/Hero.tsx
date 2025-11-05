@@ -1,112 +1,109 @@
 "use client";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/autoplay";
+import { Autoplay, Navigation } from "swiper/modules";
 import Image from "next/image";
-import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-const blogs = [
- {
-    id: 2,
-    title: "ذہنی وضاحت کے لئے ہربس",
-    image: "/Oil.jpg",
-    category: "ذہنی صحت",
-    author: "ڈاکٹر عائشہ",
-    date: "2024-01-15",
-  },
-  {
-    id: 3,
-    title: "صحت مند طرز زندگی کی ٹپس",
-    image: "/realestate.jpg",
-    category: "لائف اسٹائل",
-    author: "ہربلسٹ یوسف",
-    date: "2024-02-01",
-  },
-  {
-    id: 4,
-    title: "روایتی ہربل حکمت",
-    image: "/finance.jpg",
-    category: "طب یونانی",
-    author: "پروفیسر کریم",
-    date: "2024-02-12",
-  },
-];
+import { useRef, useState, useEffect } from "react";
+import { Blog } from "@/types/blogs";
+import { formatDate } from "@/lib/dateFormatter";
 
 export const Hero = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [fade, setFade] = useState(true);
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
+  const [swiperReady, setSwiperReady] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  // Auto-slide logic
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchBlogs = async () => {
+    try {
+      const res = await fetch("/api/blogs");
+      const data = await res.json();
+      setBlogs(data.slice(0, 3)); // <-- sirf first 3 blogs
+    } catch (err) {
+      console.error("Failed to load blogs:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      handleNext();
-    }, 4000);
-    return () => clearInterval(interval);
+    fetchBlogs();
   }, []);
 
-  const handlePrev = () => {
-    setFade(false);
-    setTimeout(() => {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === 0 ? blogs.length - 1 : prevIndex - 1
-      );
-      setFade(true);
-    }, 200); // small delay for smooth fade
-  };
- 
-  const handleNext = () => {
-    setFade(false);
-    setTimeout(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % blogs.length);
-      setFade(true);
-    }, 200);
-  };
+  useEffect(() => {
+    setSwiperReady(true);
+  }, []);
 
-  const currentBlog = blogs[currentIndex];
+  if (loading) {
+    return 
+  }
+  
 
   return (
-    <section className="relative w-full h-[30vh] sm:h-[80vh] flex items-center justify-center">
-      {/* Background Image with fade animation */}
-      <div
-        className={`absolute inset-0 transition-opacity duration-700 ${
-          fade ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <Image
-          src={currentBlog.image}
-          alt={currentBlog.title}
-          fill
-          className="object-cover object-center"
-          priority
-        />
-      </div>
+    <section className="relative w-full h-[60vh] sm:h-[70vh] overflow-visible">
+      {/* Swiper */}
+      {swiperReady && (
+        <Swiper
+          modules={[Autoplay, Navigation]}
+          navigation={{
+            prevEl: prevRef.current,
+            nextEl: nextRef.current,
+          }}
+          autoplay={{ delay: 5000 }}
+          loop
+          className="w-full h-full"
+          onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+        >
+          {blogs.map((blog) => (
+            <SwiperSlide key={blog._id}>
+              <div className="relative w-full h-[60vh] sm:h-[90vh]">
+                <Image
+                  src={blog.image}
+                  alt={blog.title}
+                  fill
+                  className="object-cover object-center"
+                  priority
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
 
-      {/* Overlay Green Box */}
+      {/* Overlay Box */}
       <div
-        className="absolute -bottom-16 md:-bottom-22  bg-[#389958] text-white px-6 py-5 lg:py-10 text-center sm:text-start 
-             w-[90vw] md:w-[70%] lg:w-[70%]"
+        className="absolute z-10 -bottom-12 sm:-bottom-20 left-1/2 -translate-x-1/2 
+        bg-[#389958] text-white px-6 py-5 lg:py-10 text-center w-[90vw] lg:w-[85%]"
         dir="rtl"
         style={{ lineHeight: "1.6" }}
       >
-        <h1 className="text-lg md:text-3xl  ">{currentBlog.title}</h1>
-        <h3 className="mt-3 text-[12px] md:text-sm text-white/70 flex gap-2 md:gap-5 justify-center md:justify-start ">
-          <span>{currentBlog.category}</span>
-          <span>{currentBlog.date}</span>
+        <h1 className="text-lg md:text-3xl">{blogs[activeIndex].title}</h1>
+        <h3 className="mt-3 text-[12px] md:text-sm text-white/70 flex gap-5 justify-center">
+          <span>{blogs[activeIndex].category?.name}</span>
+          <span>{formatDate(blogs[activeIndex].date)}</span>
         </h3>
       </div>
 
-      {/* Navigation Arrows */}
+      {/* Custom Arrows */}
       <button
-        onClick={handlePrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 backdrop-blur-2xl text-white bg-gray-100/40 p-2 rounded-full shadow-sm"
+        ref={prevRef}
+        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 
+        bg-white text-[#389958] p-3 sm:p-4 rounded-full shadow-md hover:bg-[#389958] hover:text-white transition"
       >
-        <ChevronLeft size={25} />
+        <ChevronLeft size={24} />
       </button>
 
       <button
-        onClick={handleNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 backdrop-blur-2xl text-white bg-gray-100/40 p-2 rounded-full shadow-sm"
+        ref={nextRef}
+        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 
+        bg-white text-[#389958] p-3 sm:p-4 rounded-full shadow-md hover:bg-[#389958] hover:text-white transition"
       >
-        <ChevronRight size={25} />
+        <ChevronRight size={24} />
       </button>
     </section>
   );

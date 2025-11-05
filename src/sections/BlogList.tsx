@@ -25,12 +25,8 @@ export default function BlogSection() {
     fetchBlogs();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-80 text-lg font-medium text-gray-500">
-        Loading blogs...
-      </div>
-    );
+ if (loading) {
+    return 
   }
 
   return (
