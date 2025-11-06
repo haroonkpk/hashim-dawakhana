@@ -74,12 +74,14 @@ export default function Navbar() {
                 onMouseEnter={() => setActive(cat._id)}
                 onMouseLeave={() => setActive(null)}
               >
-                <button className="flex py-4 items-center gap-1 hover:text-emerald-600 transition">
-                  {cat.name}
-                  {relatedBlogs.length > 0 && (
-                    <ChevronDown size={16} className="mt-1" />
-                  )}
-                </button>
+                <Link href={`/category/${cat.slug}`}>
+                  <button className="flex py-4 items-center gap-1 hover:text-emerald-600 transition">
+                    {cat.name}
+                    {relatedBlogs.length > 0 && (
+                      <ChevronDown size={16} className="mt-1" />
+                    )}
+                  </button>
+                </Link>
 
                 {/* Dropdown */}
                 <AnimatePresence>

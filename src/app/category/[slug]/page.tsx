@@ -1,18 +1,23 @@
 "use client";
 
 import { BlogCard } from "@/components/BlogCard";
-import { Sidebar } from "@/components/Sidebar";
 import { Blog } from "@/types/blogs";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { Sidebar } from "@/components/Sidebar";
 
 export default function Page() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const params = useParams();
+  const slug = params?.slug as string;
+
   const fetchBlogs = async () => {
     try {
-      const res = await fetch("/api/blogs");
+      const res = await fetch(`/api/blogs/getBlogsByCategorySlug/${slug}`);
+      if (!res.ok) throw new Error("Failed to fetch blogs");
       const data = await res.json();
       setBlogs(data);
     } catch (err) {
@@ -23,12 +28,17 @@ export default function Page() {
   };
 
   useEffect(() => {
-    fetchBlogs();
-  }, []);
+    if (slug) fetchBlogs();
+  }, [slug]);
 
   if (loading) {
-    return;
+    return (
+      <div className="w-full h-[50vh] flex items-center justify-center text-gray-600">
+        Loading blogs...
+      </div>
+    );
   }
+
   return (
     <div>
       {/* Banner Image */}
@@ -50,21 +60,22 @@ export default function Page() {
           dir="rtl"
           style={{ lineHeight: "1.6" }}
         >
-          <h1 className="text-lg md:text-3xl">title</h1>
+          <h1 className="text-lg md:text-3xl capitalize">{slug}</h1>
           <h3 className="mt-3 text-[12px] md:text-sm text-white/70 flex gap-2 md:gap-5 justify-center md:justify-start">
-            <span>jsdfijiasf </span>
-            <span>j fja</span>
+            <span>Hashim Dawakhana</span>
+            <span>Herbal Blogs</span>
           </h3>
         </div>
       </div>
 
+      {/* Blogs Section */}
       <section className="relative flex flex-col lg:flex-row gap-8 py-15 md:py-20 px-6 md:mt-4 md:p-20">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 flex-1">
           {blogs.length > 0 ? (
             blogs.map((blog) => <BlogCard key={blog._id} blog={blog} />)
           ) : (
             <p className="text-gray-500 text-center col-span-full">
-              No blogs found.
+              No blogs found in this category.
             </p>
           )}
         </div>

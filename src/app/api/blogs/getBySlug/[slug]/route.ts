@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import Blog from "@/models/blog.model";
-import SubCategory from "@/models/subCategory.model"; // <-- add this
 import dbConnect from "@/lib/mongodb";
 
 export async function GET(
