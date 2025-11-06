@@ -2,46 +2,45 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const categories = [
-  {
-    id: 25,
-    name: "جوڑوں کے امراض",
-    count: 1,
-  },
-  {
-    id: 26,
-    name: "جوڑوں کے امراض",
-    count: 1,
-  },
-  {
-    id: 27,
-    name: "جوڑوں کے امراض",
-    count: 1,
-  },
-  {
-    id: 28,
-    name: "جوڑوں کے امراض",
-    count: 1,
-  },
-  {
-    id: 29,
-    name: "جوڑوں کے امراض",
-    count: 1,
-  },
-];
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
 
 export const Sidebar = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  // Fetch categories
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch("/api/subCategories");
+      const data = await res.json();
+      setCategories(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   return (
     <div className="space-y-8">
-      <nav className="w-full sm:w-[300px] h-fit border border-gray-200 p-6" dir="rtl">
+      <nav
+        className="w-full sm:w-[300px] h-fit border border-gray-200 p-6"
+        dir="rtl"
+      >
         <h4 className="text-lg font-bold pb-2 mb-3">
           <span>کیٹگریز</span>
         </h4>
         <ul className="space-y-2">
           {categories.map((cat) => (
             <li
-              key={cat.id}
+              key={cat._id}
               className="flex gap-2 justify-between items-center pb-1 last:border-b-0"
             >
               <span className="w-6 h-6 flex items-center justify-center text-xs text-white bg-[#389958] rounded-full">

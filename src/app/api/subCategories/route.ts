@@ -1,18 +1,24 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import { generateSlug } from "@/lib/utils";
-import { SubCategory } from "@/models";
+import { Blog, SubCategory } from "@/models";
 
 // GET — all Subcategories (with parent info)
 export async function GET() {
   try {
     await dbConnect();
 
-    const categories = await SubCategory.find()
-      .sort({ createdAt: -1 })
-      .lean();
+    const categories = await SubCategory.find().sort({ createdAt: -1 }).lean();
 
-    return NextResponse.json(categories, { status: 200 });
+    // map karke count add karna
+    const withCounts = await Promise.all(
+      categories.map(async (cat) => {
+        const count = await Blog.countDocuments({ category: cat._id });
+        return { ...cat.toObject(), count };
+      })
+    );
+
+    return NextResponse.json(withCounts, { status: 200 });
   } catch (err) {
     console.error(err);
     return NextResponse.json(

@@ -48,7 +48,7 @@ export default function Navbar() {
 
   return (
     <nav className=" bg-white min-h-15 shadow-sm sticky top-0 z-50">
-      <div className="relative max-w-3xl xl:max-w-6xl mx-auto px-6  flex items-center justify-between">
+      <div className="relative max-w-3xl xl:max-w-6xl mx-auto p-4 sm:px-6  flex items-center justify-between">
         {/* Logo */}
         <Link href="/">
           <Image
@@ -56,7 +56,7 @@ export default function Navbar() {
             alt="logo"
             width={200}
             height={150}
-            className="absolute -bottom-8"
+            className="absolute -bottom-8 md:-bottom-4"
           />
         </Link>
 
@@ -180,22 +180,27 @@ export default function Navbar() {
                     );
                     return (
                       <li key={cat._id}>
-                        <button
-                          onClick={() =>
-                            setActive(active === cat._id ? null : cat._id)
-                          }
-                          className="flex justify-between w-full hover:text-emerald-600 transition"
-                        >
-                          {cat.name}
+                        <div className="flex justify-between w-full items-center">
+                          <Link
+                            href={`/category/${cat.slug}`}
+                            className="hover:text-emerald-600 transition"
+                            onClick={() => setOpen(false)}
+                          >
+                            {cat.name}
+                          </Link>
+
                           {relatedBlogs.length > 0 && (
                             <ChevronDown
                               size={16}
-                              className={`transition-transform ${
+                              className={`cursor-pointer transition-transform ${
                                 active === cat._id ? "rotate-180" : ""
                               }`}
+                              onClick={() =>
+                                setActive(active === cat._id ? null : cat._id)
+                              }
                             />
                           )}
-                        </button>
+                        </div>
 
                         {/* Submenu */}
                         <AnimatePresence>
