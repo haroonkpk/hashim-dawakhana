@@ -8,9 +8,8 @@ export async function GET() {
   try {
     await dbConnect();
 
-    const categories = await SubCategory.find().sort({ createdAt: -1 }).lean();
+    const categories = await SubCategory.find().sort({ createdAt: -1 });
 
-    // map karke count add karna
     const withCounts = await Promise.all(
       categories.map(async (cat) => {
         const count = await Blog.countDocuments({ category: cat._id });

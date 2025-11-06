@@ -8,6 +8,7 @@ interface Category {
   _id: string;
   name: string;
   slug: string;
+  count: number;
 }
 
 export const Sidebar = () => {
@@ -24,9 +25,12 @@ export const Sidebar = () => {
     }
   };
 
+
   useEffect(() => {
     fetchCategories();
   }, []);
+
+
 
   return (
     <div className="space-y-8">
