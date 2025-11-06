@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "Hashim Dawakhana",
   description:
     "Hashim Dawakhana – Herbal medicines, natural remedies, and trusted healthcare solutions. Find authentic products and expert guidance for your health.",
+  icons: {
+    icon: "/topLogo.jpg",
+  },
 };
 
 export default function RootLayout({
@@ -27,8 +30,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ur" dir="rtl">
+      <head>
+        <link rel="icon" href="/topLogo.jpg" sizes="any" />
+      </head>
+
       <body className="min-h-screen flex flex-col">
-        <Navbar/>
+        <Navbar />
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
