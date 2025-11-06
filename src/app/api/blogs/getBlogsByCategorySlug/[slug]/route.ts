@@ -5,10 +5,10 @@ import dbConnect from "@/lib/mongodb";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { slug: string } }
+  context: { params: Promise<{ slug: string }> }
 ) {
+  const { slug } = await context.params;
   try {
-    const { slug } = params;
     await dbConnect();
 
     if (!slug) {

@@ -25,12 +25,9 @@ export const Sidebar = () => {
     }
   };
 
-
   useEffect(() => {
     fetchCategories();
   }, []);
-
-
 
   return (
     <div className="space-y-8">

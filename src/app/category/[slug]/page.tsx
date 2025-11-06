@@ -13,7 +13,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
 
   const params = useParams();
-  const slug = params?.slug as string;
+  const slug = params?.slug as string; 
 
   const fetchBlogs = async () => {
     try {
