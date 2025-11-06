@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { BlogCard } from "@/components/BlogCard";
 import { Sidebar } from "@/components/Sidebar";
 import { Blog } from "@/types/blogs";
-import { LoadingCompo } from "@/components/ui/Loading";
 
 export default function BlogSection() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -27,12 +26,12 @@ export default function BlogSection() {
   }, []);
 
   if (loading) {
-    return <LoadingCompo />;
+    return;
   }
 
   return (
-    <section className="relative flex flex-col md:flex-row gap-8 py-15 md:py-20 px-6 md:mt-4 md:p-20">
-      <div className="grid gap-10 sm:grid-cols-2 2xl:grid-cols-3 flex-1">
+    <section className="relative flex flex-col lg:flex-row gap-8 py-15 md:py-20 px-6 md:mt-4 md:p-20">
+      <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 flex-1">
         {blogs.length > 0 ? (
           blogs.map((blog) => <BlogCard key={blog._id} blog={blog} />)
         ) : (

@@ -22,11 +22,11 @@ export async function GET() {
   }
 }
 
-//  POST — create category or subcategory
+//  POST — create subcategory
 export async function POST(req: Request) {
   try {
     await dbConnect();
-    const { name, parentId } = await req.json();
+    const { name } = await req.json();
 
     if (!name)
       return NextResponse.json(
@@ -45,7 +45,6 @@ export async function POST(req: Request) {
     const category = await SubCategory.create({
       name,
       slug,
-      MainCategory: parentId || null, // link subcategory if exists
     });
 
     return NextResponse.json({ success: true, category }, { status: 201 });
@@ -64,15 +63,6 @@ export async function DELETE(req: Request) {
     if (!id) {
       return NextResponse.json(
         { message: "Category ID required" },
-        { status: 400 }
-      );
-    }
-
-    //  Prevent deleting parent if it still has subcategories
-    const hasChildren = await SubCategory.findOne({ parent: id });
-    if (hasChildren) {
-      return NextResponse.json(
-        { message: "Cannot delete — category has subcategories." },
         { status: 400 }
       );
     }

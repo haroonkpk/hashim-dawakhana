@@ -1,52 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
 import Image from "next/image";
+import { Blog } from "@/types/blogs";
 
-const categories = [
-  {
-    name: "طب و صحت",
-    slug: "health",
-    links: [
-      {
-        title:
-          "رنگ و روشنی سے علاج – قدرتی، سادہ اور مؤثر تھراپی کا مکمل جائزہ",
-        href: "https://blog.kamilherbal.com/health/chromotherapy/",
-      },
-      {
-        title: "جامن کے 7 حیرت انگیز فوائد",
-        href: "https://blog.kamilherbal.com/health/%d8%ac%d8%a7%d9%85%d9%86-%da%a9%db%92-7-%d8%ad%db%8c%d8%b1%d8%aa-%d8%a7%d9%86%da%af%db%8c%d8%b2-%d9%81%d9%88%d8%a7%d8%a6%d8%af/",
-      },
-    ],
-  },
-  { name: "فٹنس", slug: "fitness", links: [] },
-  { name: "غذائیت", slug: "nutrition", links: [] },
-  {
-    name: "جڑی بوٹیاں اور ان کے خواص",
-    slug: "herbs-properties",
-    links: [
-      {
-        title: "نیم (Margosa) کے خواص، فوائد اور استعمال",
-        href: "https://blog.kamilherbal.com/herbs-properties/%d9%86%db%8c%d9%85/",
-      },
-      {
-        title: "ناگ کیسر (نارمشک) کے خواص، فوائد اور استعمال",
-        href: "https://blog.kamilherbal.com/herbs-properties/%d9%86%d8%a7%da%af-%da%a9%db%8c%d8%b3%d8%b1/",
-      },
-    ],
-  },
-];
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
 
 export default function Navbar() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
   const [active, setActive] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
+  // Fetch categories
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch("/api/subCategories");
+      const data = await res.json();
+      setCategories(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Fetch blogs
+  const fetchBlogs = async () => {
+    try {
+      const res = await fetch("/api/blogs");
+      const data = await res.json();
+      setBlogs(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+    fetchBlogs();
+  }, []);
+
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="relative  max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <nav className=" bg-white min-h-15 shadow-sm sticky top-0 z-50">
+      <div className="relative max-w-3xl xl:max-w-6xl mx-auto px-6  flex items-center justify-between">
         {/* Logo */}
         <Link href="/">
           <Image
@@ -59,43 +61,66 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-6 text-gray-800 font-medium">
-          {categories.map((cat) => (
-            <li
-              key={cat.slug}
-              className="relative group"
-              onMouseEnter={() => setActive(cat.slug)}
-              onMouseLeave={() => setActive(null)}
-            >
-              <button className="flex items-center gap-1 hover:text-emerald-600 transition">
-                {cat.name}
-                {cat.links.length > 0 && (
-                  <ChevronDown size={16} className="mt-1" />
-                )}
-              </button>
+        <ul className="hidden md:flex gap-6  text-gray-800 font-medium">
+          {categories.map((cat) => {
+            const relatedBlogs = blogs.filter(
+              (b) => b.category._id === cat._id
+            );
 
-              {/* Dropdown */}
-              {cat.links.length > 0 && (
-                <div
-                  className={`absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-xl overflow-hidden z-[9999] transition-all duration-300 ${
-                    active === cat.slug
-                      ? "opacity-100 translate-y-0 visible"
-                      : "opacity-0 -translate-y-3 invisible"
-                  }`}
-                >
-                  {cat.links.map((link, i) => (
-                    <Link
-                      key={i}
-                      href={link.href}
-                      className="block px-4 py-3 hover:bg-emerald-50 text-right text-sm leading-6 transition"
+            return (
+              <li
+                key={cat._id}
+                className="relative group"
+                onMouseEnter={() => setActive(cat._id)}
+                onMouseLeave={() => setActive(null)}
+              >
+                <button className="flex py-4 items-center gap-1 hover:text-emerald-600 transition">
+                  {cat.name}
+                  {relatedBlogs.length > 0 && (
+                    <ChevronDown size={16} className="mt-1" />
+                  )}
+                </button>
+
+                {/* Dropdown */}
+                <AnimatePresence>
+                  {active === cat._id && relatedBlogs.length > 0 && (
+                    <motion.div
+                      key={cat._id}
+                      initial={{ opacity: 0, y: -10, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
+                      className="absolute w-96 bg-white shadow-xl rounded-xl overflow-hidden z-[9999]"
+                      style={{
+                        left: "-50%",
+                        transform: "translateX(-50%)",
+                      }}
                     >
-                      {link.title}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </li>
-          ))}
+                      {relatedBlogs.map((blog) => (
+                        <Link
+                          key={blog._id}
+                          href={`/blogs/${blog.slug}`}
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-emerald-50 transition"
+                        >
+                          <div className="w-16 h-16 relative flex-shrink-0">
+                            <Image
+                              src={blog.image}
+                              alt={blog.title}
+                              fill
+                              className="object-cover rounded-md"
+                            />
+                          </div>
+                          <span className="text-sm text-gray-800 leading-5">
+                            {blog.title}
+                          </span>
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Mobile Menu Button */}
@@ -146,54 +171,66 @@ export default function Navbar() {
                 </div>
 
                 {/* Menu Items */}
-                <ul className="space-y-4  text-gray-800 font-medium">
-                  {categories.map((cat) => (
-                    <li key={cat.slug}>
-                      <button
-                        onClick={() =>
-                          setActive(active === cat.slug ? null : cat.slug)
-                        }
-                        className="flex justify-between w-full hover:text-emerald-600 transition"
-                      >
-                        {cat.name}
-                        {cat.links.length > 0 && (
-                          <ChevronDown
-                            size={16}
-                            className={`transition-transform ${
-                              active === cat.slug ? "rotate-180" : ""
-                            }`}
-                          />
-                        )}
-                      </button>
+                <ul className="space-y-4 text-gray-800 font-medium">
+                  {categories.map((cat) => {
+                    const relatedBlogs = blogs.filter(
+                      (b) => b.category._id === cat._id
+                    );
+                    return (
+                      <li key={cat._id}>
+                        <button
+                          onClick={() =>
+                            setActive(active === cat._id ? null : cat._id)
+                          }
+                          className="flex justify-between w-full hover:text-emerald-600 transition"
+                        >
+                          {cat.name}
+                          {relatedBlogs.length > 0 && (
+                            <ChevronDown
+                              size={16}
+                              className={`transition-transform ${
+                                active === cat._id ? "rotate-180" : ""
+                              }`}
+                            />
+                          )}
+                        </button>
 
-                      {/* Submenu */}
-                      <AnimatePresence>
-                        {active === cat.slug && cat.links.length > 0 && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            className="overflow-hidden ml-4 mt-2 border-l-2 border-emerald-100"
-                          >
-                            {cat.links.map((link, i) => (
-                              <Link
-                                key={i}
-                                href={link.href}
-                                className="block py-2 text-sm text-gray-700 hover:text-emerald-600"
-                                onClick={() => setOpen(false)}
-                              >
-                                {link.title}
-                              </Link>
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </li>
-                  ))}
+                        {/* Submenu */}
+                        <AnimatePresence>
+                          {active === cat._id && relatedBlogs.length > 0 && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              className="overflow-hidden ml-4 mt-2 border-l-2 border-emerald-100"
+                            >
+                              {relatedBlogs.map((blog) => (
+                                <Link
+                                  key={blog._id}
+                                  href={`/blogs/${blog.slug}`}
+                                  className="flex items-center gap-3 py-2 text-sm text-gray-700 hover:text-emerald-600"
+                                  onClick={() => setOpen(false)}
+                                >
+                                  <div className="w-12 h-12 relative flex-shrink-0">
+                                    <Image
+                                      src={blog.image}
+                                      alt={blog.title}
+                                      fill
+                                      className="object-cover rounded-md"
+                                    />
+                                  </div>
+                                  <span>{blog.title}</span>
+                                </Link>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
 
-              {/* Footer */}
               <div className="text-center text-xs text-gray-400 border-t pt-4">
                 © 2025 Hashim Dawakhana
               </div>

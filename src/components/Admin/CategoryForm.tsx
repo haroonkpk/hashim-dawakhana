@@ -12,7 +12,6 @@ export const CategoryForm = () => {
   const [tab, setTab] = useState<"create" | "delete">("create");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
-  const [parentId, setParentId] = useState("");
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -21,10 +20,8 @@ export const CategoryForm = () => {
     try {
       const res = await fetch("/api/subCategories");
       const data = await res.json();
-      console.log(data);
-      
-      setCategories(data);
 
+      setCategories(data);
     } catch (err) {
       console.error(err);
     }
@@ -44,7 +41,7 @@ export const CategoryForm = () => {
       const res = await fetch("/api/subCategories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, parentId }),
+        body: JSON.stringify({ name }),
       });
 
       const data = await res.json();
@@ -140,24 +137,6 @@ export const CategoryForm = () => {
                   placeholder="مثلاً جوڑوں کا درد، معدہ، نزلہ زکام..."
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:ring-2 focus:ring-green-400 focus:outline-none bg-gray-50"
                 />
-              </div>
-
-              {/*  New Dropdown for Parent Category */}
-              <div className="flex flex-col gap-4">
-                <label className="text-gray-700 font-medium text-base">
-                  اگر یہ سب کیٹیگری ہے تو پیرنٹ کیٹیگری منتخب کریں
-                </label>
-                <select
-                  onChange={(e) => setParentId(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-800 bg-gray-50 focus:ring-2 focus:ring-green-400"
-                >
-                  <option value="">کوئی نہیں (مین کیٹیگری)</option>
-                  {categories.map((cat) => (
-                    <option key={cat._id} value={cat._id}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </select>
               </div>
 
               <button

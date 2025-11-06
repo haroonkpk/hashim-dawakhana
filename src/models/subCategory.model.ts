@@ -11,7 +11,6 @@ const subCategorySchema = new Schema<ICategory>(
   {
     name: { type: String, required: true, unique: true, trim: true },
     slug: { type: String, required: true, unique: true, lowercase: true },
-    MainCategory: { type: Schema.Types.ObjectId, ref: "MainCategory" },
   },
   { timestamps: true }
 );

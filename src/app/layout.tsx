@@ -34,7 +34,7 @@ export default function RootLayout({
         <link rel="icon" href="/topLogo.jpg" sizes="any" />
       </head>
 
-      <body className="min-h-screen flex flex-col">
+      <body className="relative overflow-x-hidden min-h-screen flex flex-col">
         <Navbar />
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
