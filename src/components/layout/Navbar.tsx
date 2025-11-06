@@ -46,7 +46,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="relative overflow-hidden max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="relative  max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/">
           <Image
@@ -77,7 +77,7 @@ export default function Navbar() {
               {/* Dropdown */}
               {cat.links.length > 0 && (
                 <div
-                  className={`absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-xl overflow-hidden transition-all duration-300 ${
+                  className={`absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-xl overflow-hidden z-[9999] transition-all duration-300 ${
                     active === cat.slug
                       ? "opacity-100 translate-y-0 visible"
                       : "opacity-0 -translate-y-3 invisible"
@@ -146,7 +146,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Menu Items */}
-                <ul className="space-y-4 text-gray-800 font-medium">
+                <ul className="space-y-4  text-gray-800 font-medium">
                   {categories.map((cat) => (
                     <li key={cat.slug}>
                       <button

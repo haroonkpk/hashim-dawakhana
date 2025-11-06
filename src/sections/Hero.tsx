@@ -9,6 +9,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { Blog } from "@/types/blogs";
 import { formatDate } from "@/lib/dateFormatter";
+import { LoadingCompo } from "@/components/ui/Loading";
 
 export const Hero = () => {
   const prevRef = useRef<HTMLButtonElement>(null);
@@ -23,7 +24,7 @@ export const Hero = () => {
     try {
       const res = await fetch("/api/blogs");
       const data = await res.json();
-      setBlogs(data.slice(0, 3)); // <-- sirf first 3 blogs
+      setBlogs(data.slice(0, 3));
     } catch (err) {
       console.error("Failed to load blogs:", err);
     } finally {
@@ -40,12 +41,11 @@ export const Hero = () => {
   }, []);
 
   if (loading) {
-    return 
+    return <LoadingCompo />;
   }
-  
 
   return (
-    <section className="relative w-full h-[60vh] sm:h-[70vh] overflow-visible">
+    <section className="relative w-full h-[60vh] sm:h-[70vh] !overflow-visible">
       {/* Swiper */}
       {swiperReady && (
         <Swiper

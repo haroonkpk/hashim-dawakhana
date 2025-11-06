@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { BlogCard } from "@/components/BlogCard";
 import { Sidebar } from "@/components/Sidebar";
 import { Blog } from "@/types/blogs";
+import { LoadingCompo } from "@/components/ui/Loading";
 
 export default function BlogSection() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
   const fetchBlogs = async () => {
     try {
@@ -17,7 +18,7 @@ export default function BlogSection() {
     } catch (err) {
       console.error("Failed to load blogs:", err);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -25,8 +26,8 @@ export default function BlogSection() {
     fetchBlogs();
   }, []);
 
- if (loading) {
-    return 
+  if (loading) {
+    return <LoadingCompo />;
   }
 
   return (
