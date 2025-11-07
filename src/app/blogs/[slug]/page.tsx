@@ -33,13 +33,11 @@ export async function generateStaticParams() {
 }
 
 // SEO metadata for each blog
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/getBySlug/${params.slug}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/getBySlug/${slug}`,
     { next: { revalidate: 3600 } }
   );
 
@@ -50,6 +48,7 @@ export async function generateMetadata({
   const blog: Blog = await res.json();
   const firstParagraph =
     blog?.blocks?.find((b) => b.type === "paragraph")?.content || "";
+
   return {
     title: blog.title,
     description: firstParagraph.slice(0, 150),
