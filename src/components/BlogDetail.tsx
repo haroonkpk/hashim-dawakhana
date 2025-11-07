@@ -10,6 +10,8 @@ interface BlogDetailProps {
 }
 
 export default function BlogDetailSection({ blog }: BlogDetailProps) {
+  console.log(blog);
+  
   return (
     <div>
       <article>
