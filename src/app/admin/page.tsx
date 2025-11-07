@@ -22,7 +22,7 @@ const AdminPanel = () => {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100 px-6 text-center">
         <p className="text-lg font-bold text-gray-700 leading-relaxed">
-           یہ صفحہ موبائل کے لیے دستیاب نہیں ہے۔ <br />
+          یہ صفحہ موبائل کے لیے دستیاب نہیں ہے۔ <br />
           براہ کرم اسے اپنے لیپ ٹاپ یا کمپیوٹر پر کھولیں۔
         </p>
       </div>
@@ -38,7 +38,7 @@ const AdminPanel = () => {
   return (
     <div className="flex h-screen">
       {/* Fixed Sidebar */}
-      <aside className="w-64 bg-[#389958] text-white p-4 space-y-6 fixed top-0 right-0 h-full">
+      <aside className="w-64 bg-[#389958] text-white p-4 space-y-6 fixed top-22 right-0 h-full">
         <h2 className="text-2xl font-bold text-center mb-6">ایڈمن پینل</h2>
         <ul className="space-y-2">
           {tabs.map((tab) => (

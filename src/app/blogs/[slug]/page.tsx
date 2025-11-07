@@ -78,7 +78,7 @@ export default async function BlogDetail({
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/getBySlug/${params.slug}`,
     { next: { revalidate: 3600 } }
   );
-
+ 
   if (!res.ok) {
     return <div>Blog not found</div>;
   }

@@ -3,6 +3,7 @@ import React from "react";
 import { Sidebar } from "./Sidebar";
 import { Blog } from "@/types/blogs";
 import { BlogBlocks } from "./BlogBlocks";
+import { formatDate } from "@/lib/dateFormatter";
 
 interface BlogDetailProps {
   blog: Blog;
@@ -55,7 +56,7 @@ export default function BlogDetailSection({ blog }: BlogDetailProps) {
             <h1 className="text-lg md:text-3xl">{blog.title}</h1>
             <h3 className="mt-3 text-[12px] md:text-sm text-white/70 flex gap-2 md:gap-5 justify-center md:justify-start">
               <span>{blog.category.name}</span>
-              <span>{blog.date}</span>
+              <span>{formatDate(blog.date)}</span>
             </h3>
           </div>
         </div>
@@ -64,7 +65,7 @@ export default function BlogDetailSection({ blog }: BlogDetailProps) {
       {/* Blog Content */}
       <div className="w-full flex justify-center my-32 ">
         <div className="w-full max-w-[85%] gap-y-8 lg:justify-between flex flex-col lg:flex-row ">
-          <BlogBlocks blogBlocks={blog}/>
+          <BlogBlocks blogBlocks={blog} />
 
           {/* Sidebar */}
           <div>

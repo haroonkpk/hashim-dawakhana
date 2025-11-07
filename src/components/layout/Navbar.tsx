@@ -120,7 +120,7 @@ export default function Navbar() {
             );
           })}
 
-          {/* Extra Category "Amraz" */}
+          {/* Extra Category */}
           <li
             className="relative group"
             onMouseEnter={() => setActive("amraz")}
@@ -205,7 +205,8 @@ export default function Navbar() {
 
                 {/* Menu Items */}
                 <ul className="space-y-4 text-gray-800 font-medium">
-                  {categories.map((cat) => {
+                  {/* First 4 categories */}
+                  {categories.slice(0, 4).map((cat) => {
                     const relatedBlogs = blogs.filter(
                       (b) => b.category._id === cat._id
                     );
@@ -266,6 +267,48 @@ export default function Navbar() {
                       </li>
                     );
                   })}
+
+                  {/* Extra Category for remaining */}
+                  <li>
+                    <div
+                      className="flex justify-between w-full items-center"
+                      onClick={() =>
+                        setActive(active === "amraz" ? null : "amraz")
+                      }
+                    >
+                      <span className="hover:text-emerald-600 transition">
+                        امراض
+                      </span>
+                      <ChevronDown
+                        size={16}
+                        className={`cursor-pointer transition-transform ${
+                          active === "amraz" ? "rotate-180" : ""
+                        }`}
+                      />
+                    </div>
+
+                    <AnimatePresence>
+                      {active === "amraz" && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="overflow-hidden ml-4 mt-2 border-l-2 border-emerald-100"
+                        >
+                          {categories.slice(4).map((cat) => (
+                            <Link
+                              key={cat._id}
+                              href={`/category/${cat.slug}`}
+                              className="block py-2 text-sm text-gray-700 hover:text-emerald-600"
+                              onClick={() => setOpen(false)}
+                            >
+                              {cat.name}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </li>
                 </ul>
               </div>
 

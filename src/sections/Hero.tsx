@@ -93,7 +93,7 @@ export const Hero = () => {
       <button
         ref={prevRef}
         className="absolute left-2 top-1/2 -translate-y-1/2 z-20 
-        bg-white text-[#389958] p-3 sm:p-4 rounded-full shadow-md hover:bg-[#389958] hover:text-white transition"
+        bg-white/50 text-[#389958] p-2 sm:p-3 rounded-full shadow-md hover:bg-[#389958] hover:text-white transition"
       >
         <ChevronLeft size={24} />
       </button>
@@ -101,7 +101,7 @@ export const Hero = () => {
       <button
         ref={nextRef}
         className="absolute right-2 top-1/2 -translate-y-1/2 z-20 
-        bg-white text-[#389958] p-3 sm:p-4 rounded-full shadow-md hover:bg-[#389958] hover:text-white transition"
+        bg-white/50 text-[#389958] p-2 sm:p-3 rounded-full shadow-md hover:bg-[#389958] hover:text-white transition"
       >
         <ChevronRight size={24} />
       </button>
