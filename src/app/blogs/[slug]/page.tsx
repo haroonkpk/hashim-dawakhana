@@ -3,7 +3,7 @@ import BlogDetailSection from "@/components/BlogDetail";
 import { Blog } from "@/types/blogs";
 
 //  1 ghante baad page revalidate hoga
-export const revalidate = 3600;
+export const revalidate = 30;
 
 generateStaticParams();
 
