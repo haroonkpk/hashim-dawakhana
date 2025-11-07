@@ -6,14 +6,15 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar";
-import { BookOpen } from "lucide-react"; 
+import { BookOpen } from "lucide-react";
+import { LoadingCompo } from "@/components/ui/Loading";
 
 export default function Page() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
 
   const params = useParams();
-  const slug = params?.slug as string; 
+  const slug = params?.slug as string;
 
   const fetchBlogs = async () => {
     try {
@@ -33,17 +34,13 @@ export default function Page() {
   }, [slug]);
 
   if (loading) {
-    return (
-      <div className="w-full h-[50vh] flex items-center justify-center text-gray-600">
-        بلاگز لوڈ ہو رہے ہیں...
-      </div>
-    );
+    return <LoadingCompo />;
   }
 
   const firstBlog = blogs[0];
 
   return (
-    <div>
+    <div >
       {/*  Hero Section (First Blog) */}
       {firstBlog ? (
         <div className="relative w-full h-[30vh] sm:h-[80vh] flex items-center justify-center">
@@ -64,7 +61,9 @@ export default function Page() {
             dir="rtl"
             style={{ lineHeight: "1.6" }}
           >
-            <h1 className="text-lg md:text-3xl capitalize">{firstBlog.title}</h1>
+            <h1 className="text-lg md:text-3xl capitalize">
+              {firstBlog.title}
+            </h1>
             <h3 className="mt-3 text-[12px] md:text-sm text-white/70 flex gap-2 md:gap-5 justify-center md:justify-start">
               <span>{firstBlog.author || "حکیم ہاشم دواخانہ"}</span>
               <span>
@@ -78,7 +77,6 @@ export default function Page() {
           </div>
         </div>
       ) : (
-        //  Beautiful Arabic/Urdu Message UI
         <div className="relative w-full h-[70vh] flex flex-col items-center justify-center bg-gradient-to-br from-emerald-50 to-green-100 text-center px-6">
           <BookOpen size={60} className="text-emerald-600 mb-6" />
           <h2
@@ -94,12 +92,11 @@ export default function Page() {
             ہماری ٹیم جلد ہی اس موضوع پر مفید تحریریں شامل کرے گی۔ براہ کرم بعد
             میں دوبارہ ملاحظہ فرمائیں۔
           </p>
-
         </div>
       )}
 
       {/*  Blogs Section */}
-      <section className="relative flex flex-col lg:flex-row gap-8 py-15 md:py-20 px-6 md:mt-4 md:p-20">
+      <section className="w-full max-lg:w-[85%] relative flex flex-col lg:flex-row gap-8 py-15 md:py-20 2xl:px-35 px-6 md:mt-4 md:p-20">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 flex-1">
           {blogs.length > 0 ? (
             blogs.map((blog) => <BlogCard key={blog._id} blog={blog} />)
@@ -114,6 +111,7 @@ export default function Page() {
             </div>
           )}
         </div>
+
         <Sidebar />
       </section>
     </div>

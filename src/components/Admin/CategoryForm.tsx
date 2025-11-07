@@ -70,7 +70,7 @@ export const CategoryForm = () => {
     if (!confirm("کیا آپ واقعی اس کیٹیگری کو حذف کرنا چاہتے ہیں؟")) return;
 
     try {
-      const res = await fetch("/api/categories", {
+      const res = await fetch("/api/subCategories", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),

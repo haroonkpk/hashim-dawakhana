@@ -61,12 +61,11 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-6  text-gray-800 font-medium">
-          {categories.map((cat) => {
+        <ul className="hidden md:flex gap-6 text-gray-800 font-medium">
+          {categories.slice(0, 4).map((cat) => {
             const relatedBlogs = blogs.filter(
               (b) => b.category._id === cat._id
             );
-
             return (
               <li
                 key={cat._id}
@@ -83,20 +82,17 @@ export default function Navbar() {
                   </button>
                 </Link>
 
-                {/* Dropdown */}
+                {/* Dropdown for normal categories */}
                 <AnimatePresence>
                   {active === cat._id && relatedBlogs.length > 0 && (
                     <motion.div
                       key={cat._id}
-                      initial={{ opacity: 0, y: -10, scale: 0.98 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -8, scale: 0.98 }}
-                      transition={{ duration: 0.25, ease: "easeOut" }}
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.25 }}
                       className="absolute w-96 bg-white shadow-xl rounded-xl overflow-hidden z-[9999]"
-                      style={{
-                        left: "-50%",
-                        transform: "translateX(-50%)",
-                      }}
+                      style={{ left: "-50%", transform: "translateX(-50%)" }}
                     >
                       {relatedBlogs.map((blog) => (
                         <Link
@@ -104,7 +100,7 @@ export default function Navbar() {
                           href={`/blogs/${blog.slug}`}
                           className="flex items-center gap-3 px-4 py-3 hover:bg-emerald-50 transition"
                         >
-                          <div className="w-16 h-16 relative flex-shrink-0">
+                          <div className="w-16 h-16 relative">
                             <Image
                               src={blog.image}
                               alt={blog.title}
@@ -112,7 +108,7 @@ export default function Navbar() {
                               className="object-cover rounded-md"
                             />
                           </div>
-                          <span className="text-sm text-gray-800 leading-5">
+                          <span className="text-sm text-gray-800">
                             {blog.title}
                           </span>
                         </Link>
@@ -123,6 +119,41 @@ export default function Navbar() {
               </li>
             );
           })}
+
+          {/* Extra Category "Amraz" */}
+          <li
+            className="relative group"
+            onMouseEnter={() => setActive("amraz")}
+            onMouseLeave={() => setActive(null)}
+          >
+            <button className="flex py-4 items-center gap-1 hover:text-emerald-600 transition">
+              امراض
+              <ChevronDown size={16} className="mt-1" />
+            </button>
+
+            <AnimatePresence>
+              {active === "amraz" && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25 }}
+                  className="absolute w-64 bg-white shadow-xl rounded-xl overflow-hidden z-[9999]"
+                  style={{ left: "-50%", transform: "translateX(-50%)" }}
+                >
+                  {categories.slice(4).map((cat) => (
+                    <Link
+                      key={cat._id}
+                      href={`/category/${cat.slug}`}
+                      className="block px-4 py-3 text-gray-700 hover:bg-emerald-50 transition"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </li>
         </ul>
 
         {/* Mobile Menu Button */}

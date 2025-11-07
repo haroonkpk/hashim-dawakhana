@@ -14,12 +14,12 @@ interface Category {
 export const Sidebar = () => {
   const [categories, setCategories] = useState<Category[]>([]);
 
-  // Fetch categories
+  // Fetch categoriess
   const fetchCategories = async () => {
     try {
       const res = await fetch("/api/subCategories");
       const data = await res.json();
-      setCategories(data);
+      setCategories(data.slice(-8));
     } catch (err) {
       console.error(err);
     }
@@ -49,8 +49,8 @@ export const Sidebar = () => {
               </span>
 
               <Link
-                href="#"
-                className="flex-1 text-gray-800 hover:text-green-600 transition-colors "
+                href={`/category/${cat.slug}`}
+                className="flex-1 text-gray-800 hover:text-green-600 transition-colors"
               >
                 <span>{cat.name}</span>
               </Link>
@@ -58,6 +58,7 @@ export const Sidebar = () => {
           ))}
         </ul>
       </nav>
+
       <div className="sticky top-10 z-10 w-full sm:w-[300px] h-[350px]">
         <Image
           src="/finance.jpg"
