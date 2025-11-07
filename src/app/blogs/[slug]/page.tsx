@@ -10,7 +10,7 @@ generateStaticParams();
 export async function generateStaticParams() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 30 },
     });
 
     if (!res.ok) {
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/getBySlug/${slug}`,
-    { next: { revalidate: 3600 } }
+    { next: { revalidate: 30 } }
   );
 
   if (!res.ok) {
@@ -76,7 +76,7 @@ export default async function BlogDetail({
 }) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/getBySlug/${params.slug}`,
-    { next: { revalidate: 3600 } }
+    { next: { revalidate: 30 } }
   );
  
   if (!res.ok) {
