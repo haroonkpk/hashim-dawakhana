@@ -96,7 +96,7 @@ export default function Page() {
       )}
 
       {/*  Blogs Section */}
-      <section className="w-full max-lg:w-[85%] relative flex flex-col lg:flex-row gap-8 py-15 md:py-20 2xl:px-35 px-6 md:mt-4 md:p-20">
+      <section className="w-full md:max-lg:w-[85%] relative flex flex-col lg:flex-row gap-8 py-25 md:py-32 2xl:px-35 px-6 md:mt-4 md:p-20">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 flex-1">
           {blogs.length > 0 ? (
             blogs.map((blog) => <BlogCard key={blog._id} blog={blog} />)

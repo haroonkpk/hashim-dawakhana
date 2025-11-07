@@ -8,7 +8,7 @@ export async function GET() {
   try {
     await dbConnect();
 
-    const categories = await SubCategory.find().sort({ createdAt: -1 });
+    const categories = await SubCategory.find();
 
     const withCounts = await Promise.all(
       categories.map(async (cat) => {

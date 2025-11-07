@@ -19,7 +19,7 @@ export const Sidebar = () => {
     try {
       const res = await fetch("/api/subCategories");
       const data = await res.json();
-      setCategories(data.slice(-8));
+      setCategories(data.slice(-8).reverse());
     } catch (err) {
       console.error(err);
     }
