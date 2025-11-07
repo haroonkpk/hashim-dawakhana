@@ -34,7 +34,6 @@ export async function POST(req: Request) {
   try {
     await dbConnect();
     const body = await req.json();
-    console.log("POST /api/blogs body:", body);
 
     const { title, image, category, author } = body;
 
@@ -53,7 +52,6 @@ export async function POST(req: Request) {
 
     await blog.save();
 
-    console.log("POST /api/blogs created:", blog._id);
     return NextResponse.json(blog, { status: 201 });
   } catch (error: unknown) {
     console.error("Error in POST /api/blogs:", error);
