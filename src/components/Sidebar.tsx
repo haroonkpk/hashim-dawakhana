@@ -59,7 +59,8 @@ export const Sidebar = () => {
         </ul>
       </nav>
 
-      <div className="sticky top-10 z-10 w-full sm:w-[300px] h-[350px]">
+      <div className="sticky top-26
+       z-10 w-full sm:w-[300px] h-[350px]">
         <Image
           src="/finance.jpg"
           alt="hashim dawakhana"

@@ -11,7 +11,7 @@ interface BlogDetailProps {
 
 export default function BlogDetailSection({ blog }: BlogDetailProps) {
   console.log(blog);
-  
+
   return (
     <div>
       <article>
@@ -70,9 +70,8 @@ export default function BlogDetailSection({ blog }: BlogDetailProps) {
           <BlogBlocks blogBlocks={blog} />
 
           {/* Sidebar */}
-          <div>
-            <Sidebar />
-          </div>
+
+          <Sidebar />
         </div>
       </div>
     </div>
