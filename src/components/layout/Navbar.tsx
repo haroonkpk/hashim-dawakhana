@@ -127,7 +127,7 @@ export default function Navbar() {
             onMouseLeave={() => setActive(null)}
           >
             <button className="flex py-4 items-center gap-1 hover:text-emerald-600 transition">
-              امراض
+              امراض اور ان کا علاج
               <ChevronDown size={16} className="mt-1" />
             </button>
 
