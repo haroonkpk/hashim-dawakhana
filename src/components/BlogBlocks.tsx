@@ -26,7 +26,7 @@ export const BlogBlocks: React.FC<BlogBlocksProps> = ({ blogBlocks }) => {
             return (
               <p
                 key={index}
-                className="text-lg leading-relaxed text-gray-800 dark:text-gray-300"
+                className="text-lg leading-relaxed text-gray-800 dark:text-gray-450"
               >
                 {block.content}
               </p>
