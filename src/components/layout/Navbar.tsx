@@ -277,7 +277,7 @@ export default function Navbar() {
                       }
                     >
                       <span className="hover:text-emerald-600 transition">
-                        امراض
+                        امراض اور ان کا علاج
                       </span>
                       <ChevronDown
                         size={16}
