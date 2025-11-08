@@ -31,7 +31,7 @@ export const Footer=()=> {
               <li className="flex items-start gap-2">
                 <Phone size={16} className="mt-0.5 text-[#389958]" />
                 <a href="tel:+923001234567" className="hover:underline">
-                  +92 300 1234567
+                  03189545473
                 </a>
               </li>
               <li className="flex items-start gap-2">
@@ -40,7 +40,7 @@ export const Footer=()=> {
                   href="mailto:info@hashimdawakhana.pk"
                   className="hover:underline"
                 >
-                  info@hashimdawakhana.pk
+                  hashim1122qazi@gmail.com
                 </a>
               </li>
             </ul>
