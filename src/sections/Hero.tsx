@@ -45,7 +45,7 @@ export const Hero = () => {
   }
 
   return (
-    <section className="relative w-full h-[60vh] sm:h-[70vh] !overflow-visible">
+    <section className="relative w-full h-[30vh] sm:h-[80vh] !overflow-visible">
       {/* Swiper */}
       {swiperReady && (
         <Swiper
@@ -61,11 +61,12 @@ export const Hero = () => {
         >
           {blogs.map((blog) => (
             <SwiperSlide key={blog._id}>
-              <div className="relative w-full h-[60vh] sm:h-[90vh]">
+              <div className="relative w-full h-[30vh] sm:h-[80vh]">
                 <Image
                   src={blog.image}
                   alt={blog.title}
                   fill
+                  unoptimized
                   className="object-cover object-center"
                   priority
                 />
@@ -77,7 +78,7 @@ export const Hero = () => {
 
       {/* Overlay Box */}
       <div
-        className="absolute z-10 -bottom-12 sm:-bottom-20 left-1/2 -translate-x-1/2 
+        className="absolute z-10 -bottom-20 sm:-bottom-20 left-1/2 -translate-x-1/2 
         bg-[#389958] text-white px-6 py-5 lg:py-10 text-center w-[90vw] lg:w-[85%]"
         dir="rtl"
         style={{ lineHeight: "1.6" }}

@@ -82,7 +82,7 @@ export const CreateBlog = () => {
       const uploadData = await uploadRes.json();
       const imageUrl = uploadData.url;
 
-      const res = await fetch("/api/blogs", {
+      await fetch("/api/blogs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -92,8 +92,8 @@ export const CreateBlog = () => {
           category: selectedCategory._id,
         }),
       });
-      const data = await res.json();
-      alert(data.success ? "بلاگ کامیابی سے بن گیا!" : "خرابی پیش آگئی!");
+
+      alert("بلاگ کامیابی سے بن گیا!");
       setForm({ title: "", image: "", category: "", author: "" });
       setPreview("");
       setSelectedCategory(null);

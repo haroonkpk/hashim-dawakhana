@@ -49,6 +49,7 @@ export default function Page() {
               src={firstBlog.image || "/default.jpg"}
               alt={firstBlog.title}
               fill
+              unoptimized
               className="object-cover object-center"
               priority
             />

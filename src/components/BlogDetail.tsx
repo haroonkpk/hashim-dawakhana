@@ -37,21 +37,29 @@ export default function BlogDetailSection({ blog }: BlogDetailProps) {
         />
 
         {/* Banner Image */}
-        <div className="relative w-full h-[30vh] sm:h-[80vh] flex items-center justify-center">
-          <div className="absolute inset-0">
+        <div className="relative w-full h-[30vh] sm:[60vh] md:h-[70vh] flex items-center justify-center">
+          <div className="absolute inset-0 overflow-hidden">
+            {/* Blurred background */}
             <Image
               src={blog.image}
               alt={blog.title}
               fill
-              className="object-cover object-center"
-              priority
+              className="object-cover blur-xl scale-105"
+            />
+
+            {/* Main image */}
+            <Image
+              src={blog.image}
+              alt={blog.title}
+              fill
+              className="object-cover xl:object-contain object-center relative z-10"
             />
           </div>
 
           {/* Overlay Green Box */}
           <div
-            className="absolute -bottom-16 md:-bottom-22 bg-[#389958] text-white px-6 py-5 lg:py-10 text-center sm:text-start 
-             w-[90vw] lg:w-[85%]"
+            className="absolute -bottom-20 md:-bottom-22 bg-[#389958] text-white px-6 py-5 lg:py-10 text-center sm:text-start 
+             w-[90vw] lg:w-[85%] z-10"
             dir="rtl"
             style={{ lineHeight: "1.6" }}
           >
