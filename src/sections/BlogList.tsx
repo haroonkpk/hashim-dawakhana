@@ -1,38 +1,44 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { BlogCard } from "@/components/BlogCard";
 import { Sidebar } from "@/components/Sidebar";
+import useSWR from "swr";
 import { Blog } from "@/types/blogs";
 
+// SWR fetcher function
+const fetcher = (url: string) => fetch(url).then(res => res.json());
+
 export default function BlogSection() {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Using SWR for caching & revalidation
+  const { data: blogs, error, isLoading } = useSWR<Blog[]>("/api/blogs", fetcher, {
+    revalidateOnFocus: false,  // user focus pe automatic fetch na ho
+    dedupingInterval: 60000,   // 1 minute caching
+  });
 
-  const fetchBlogs = async () => {
-    try {
-      const res = await fetch("/api/blogs");
-      const data = await res.json();
-      setBlogs(data);
-    } catch (err) {
-      console.error("Failed to load blogs:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Loading state
+  if (isLoading) {
+    return (
+      <section className="flex justify-center items-center py-20">
+        <p className="text-gray-500 text-lg">Loading blogs...</p>
+      </section>
+    );
+  }
 
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
-
-  if (loading) {
-    return;
+  // Error state
+  if (error) {
+    return (
+      <section className="flex justify-center items-center py-20">
+        <p className="text-red-500 text-lg">Failed to load blogs. Please try again later.</p>
+      </section>
+    );
   }
 
   return (
     <section className="relative flex flex-col lg:flex-row gap-8 py-15 md:py-20 px-6 2xl:px-35 md:mt-4 md:p-20">
+      
+      {/* Blogs Grid */}
       <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 flex-1">
-        {blogs.length > 0 ? (
+        {blogs && blogs.length > 0 ? (
           blogs.map((blog) => <BlogCard key={blog._id} blog={blog} />)
         ) : (
           <p className="text-gray-500 text-center col-span-full">
@@ -40,6 +46,8 @@ export default function BlogSection() {
           </p>
         )}
       </div>
+
+      {/* Sidebar */}
       <Sidebar />
     </section>
   );
