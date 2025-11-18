@@ -1,4 +1,5 @@
 "use client";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -7,9 +8,13 @@ import { Autoplay, Navigation } from "swiper/modules";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
+import useSWR from "swr";
 import { Blog } from "@/types/blogs";
 import { formatDate } from "@/lib/dateFormatter";
 import { LoadingCompo } from "@/components/ui/Loading";
+
+// SWR fetcher function
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const Hero = () => {
   const prevRef = useRef<HTMLButtonElement>(null);
@@ -17,32 +22,36 @@ export const Hero = () => {
   const [swiperReady, setSwiperReady] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchBlogs = async () => {
-    try {
-      const res = await fetch("/api/blogs");
-      const data = await res.json();
-      setBlogs(data.slice(0, 3));
-    } catch (err) {
-      console.error("Failed to load blogs:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
+  // SWR hook for caching blogs
+  const { data: blogs, error, isLoading } = useSWR<Blog[]>("/api/blogs", fetcher, {
+    revalidateOnFocus: false,   // tab focus pe automatic fetch na ho
+    dedupingInterval: 60000,    // 1 min caching
+  });
 
   useEffect(() => {
     setSwiperReady(true);
   }, []);
 
-  if (loading) {
-    return <LoadingCompo />;
-  }
+  // Loading state
+  if (isLoading) return <LoadingCompo />;
+
+  // Error state
+  if (error)
+    return (
+      <section className="flex justify-center items-center py-20">
+        <p className="text-red-500 text-lg">Failed to load blogs. Please try again later.</p>
+      </section>
+    );
+
+  // Take first 3 blogs for Hero
+  const heroBlogs = blogs?.slice(0, 3) || [];
+
+  if (heroBlogs.length === 0)
+    return (
+      <section className="flex justify-center items-center py-20">
+        <p className="text-gray-500 text-lg">No blogs available.</p>
+      </section>
+    );
 
   return (
     <section className="relative w-full h-[30vh] sm:h-[80vh] !overflow-visible">
@@ -59,7 +68,7 @@ export const Hero = () => {
           className="w-full h-full"
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
         >
-          {blogs.map((blog) => (
+          {heroBlogs.map((blog) => (
             <SwiperSlide key={blog._id}>
               <div className="relative w-full h-[30vh] sm:h-[80vh]">
                 <Image
@@ -83,10 +92,10 @@ export const Hero = () => {
         dir="rtl"
         style={{ lineHeight: "1.6" }}
       >
-        <h1 className="text-lg md:text-3xl">{blogs[activeIndex].title}</h1>
+        <h1 className="text-lg md:text-3xl">{heroBlogs[activeIndex].title}</h1>
         <h3 className="mt-3 text-[12px] md:text-sm text-white/70 flex gap-5 justify-center">
-          <span>{blogs[activeIndex].category?.name}</span>
-          <span>{formatDate(blogs[activeIndex].date)}</span>
+          <span>{heroBlogs[activeIndex].category?.name}</span>
+          <span>{formatDate(heroBlogs[activeIndex].date)}</span>
         </h3>
       </div>
 
