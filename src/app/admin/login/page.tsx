@@ -39,7 +39,7 @@ export default function LoginPage() {
         className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm"
       >
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-          Admin Login
+          Login
         </h2>
         {error && (
           <p className="bg-red-100 text-red-700 p-2 rounded-md mb-4 text-center">
