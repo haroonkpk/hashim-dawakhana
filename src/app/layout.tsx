@@ -32,6 +32,7 @@ export default function RootLayout({
     <html lang="ur" dir="rtl">
       <head>
         <link rel="icon" href="/topLogo.jpg" sizes="any" />
+        <meta name="google-site-verification" content="lIwY5sPNPR4XQTQ4ksidgf7lj1yRQILeF0u64wXvoyw" />
       </head>
 
       <body className="relative overflow-x-hidden min-h-screen flex flex-col">
