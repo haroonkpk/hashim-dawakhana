@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import useSWR from "swr";
 
 interface Category {
   _id: string;
@@ -11,23 +11,18 @@ interface Category {
   count: number;
 }
 
+// SWR fetcher function
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 export const Sidebar = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  // Fetch categoriess
-  const fetchCategories = async () => {
-    try {
-      const res = await fetch("/api/subCategories");
-      const data = await res.json();
-      setCategories(data.slice(-8).reverse());
-    } catch (err) {
-      console.error(err);
+  const { data: categories } = useSWR<Category[]>(
+    "/api/subCategories",
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 60000,
     }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  );
 
   return (
     <div className="space-y-8">
@@ -39,23 +34,24 @@ export const Sidebar = () => {
           <span>کیٹگریز</span>
         </h4>
         <ul className="space-y-2">
-          {categories.map((cat) => (
-            <li
-              key={cat._id}
-              className="flex gap-2 justify-between items-center pb-1 last:border-b-0"
-            >
-              <span className="w-6 h-6 flex items-center justify-center text-xs text-white bg-[#389958] rounded-full">
-                {cat.count}
-              </span>
-
-              <Link
-                href={`/category/${cat.slug}`}
-                className="flex-1 text-gray-800 hover:text-green-600 transition-colors"
+          {categories &&
+            categories.map((cat) => (
+              <li
+                key={cat._id}
+                className="flex gap-2 justify-between items-center pb-1 last:border-b-0"
               >
-                <span>{cat.name}</span>
-              </Link>
-            </li>
-          ))}
+                <span className="w-6 h-6 flex items-center justify-center text-xs text-white bg-[#389958] rounded-full">
+                  {cat.count}
+                </span>
+
+                <Link
+                  href={`/category/${cat.slug}`}
+                  className="flex-1 text-gray-800 hover:text-green-600 transition-colors"
+                >
+                  <span>{cat.name}</span>
+                </Link>
+              </li>
+            ))}
         </ul>
       </nav>
 
@@ -65,7 +61,7 @@ export const Sidebar = () => {
       >
         <Image
           src="/No-Image-Available.png"
-          alt="hashim dawakhana"
+          alt="hashim dawakhana products"
           fill
           className="object-cover"
         />

@@ -11,8 +11,8 @@ const fetcher = (url: string) => fetch(url).then(res => res.json());
 export default function BlogSection() {
   // Using SWR for caching & revalidation
   const { data: blogs, error, isLoading } = useSWR<Blog[]>("/api/blogs", fetcher, {
-    revalidateOnFocus: false,  // user focus pe automatic fetch na ho
-    dedupingInterval: 60000,   // 1 minute caching
+    revalidateOnFocus: false,  
+    dedupingInterval: 60000,  
   });
 
   // Loading state
