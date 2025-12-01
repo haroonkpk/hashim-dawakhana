@@ -59,10 +59,12 @@ export const Sidebar = () => {
         </ul>
       </nav>
 
-      <div className="sticky top-26
-       z-10 w-full sm:w-[300px] h-[350px]">
+      <div
+        className="sticky top-26
+       z-10 w-full sm:w-[300px] h-[350px]"
+      >
         <Image
-          src="/finance.jpg"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcJciaWzwr-GEym4Zn20K3DlAGDgnlY6AgJjBb_bLOlGk6vvWOr2Y7_cGLex080hO9SV8&usqp=CAU"
           alt="hashim dawakhana"
           fill
           className="object-cover"
