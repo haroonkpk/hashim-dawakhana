@@ -3,7 +3,6 @@
 import { BlogCard } from "@/components/BlogCard";
 import { Blog } from "@/types/blogs";
 import Image from "next/image";
-import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar";
 import { BookOpen } from "lucide-react";
@@ -13,7 +12,6 @@ import useSWR from "swr";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Page() {
-  const [loading, setLoading] = useState(true);
 
   const params = useParams();
   const slug = params?.slug as string;
@@ -22,7 +20,7 @@ export default function Page() {
     `/api/blogs/getBlogsByCategorySlug/${slug}`,
     fetcher,
     {
-      revalidateOnFocus: false, // user focus pe automatic fetch na ho
+      revalidateOnFocus: false,
       dedupingInterval: 60000, // 1 minute caching
     }
   );

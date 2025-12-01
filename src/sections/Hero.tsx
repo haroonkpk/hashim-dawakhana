@@ -24,7 +24,7 @@ export const Hero = () => {
 
   // SWR hook for caching blogs
   const { data: blogs, error, isLoading } = useSWR<Blog[]>("/api/blogs", fetcher, {
-    revalidateOnFocus: false,   // tab focus pe automatic fetch na ho
+    revalidateOnFocus: false,  
     dedupingInterval: 60000,    // 1 min caching
   });
 
@@ -44,7 +44,7 @@ export const Hero = () => {
     );
 
   // Take first 3 blogs for Hero
-  const heroBlogs = blogs?.slice(0, 3) || [];
+  const heroBlogs = blogs?.slice(1, 4) || [];
 
   if (heroBlogs.length === 0)
     return (
