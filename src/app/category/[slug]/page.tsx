@@ -3,44 +3,38 @@
 import { BlogCard } from "@/components/BlogCard";
 import { Blog } from "@/types/blogs";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar";
 import { BookOpen } from "lucide-react";
 import { LoadingCompo } from "@/components/ui/Loading";
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Page() {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
 
   const params = useParams();
   const slug = params?.slug as string;
 
-  const fetchBlogs = async () => {
-    try {
-      const res = await fetch(`/api/blogs/getBlogsByCategorySlug/${slug}`);
-      if (!res.ok) throw new Error("Failed to fetch blogs");
-      const data = await res.json();
-      setBlogs(data);
-    } catch (err) {
-      console.error("Failed to load blogs:", err);
-    } finally {
-      setLoading(false);
+  const { data: blogs, isLoading } = useSWR<Blog[]>(
+    `/api/blogs/getBlogsByCategorySlug/${slug}`,
+    fetcher,
+    {
+      revalidateOnFocus: false, // user focus pe automatic fetch na ho
+      dedupingInterval: 60000, // 1 minute caching
     }
-  };
+  );
 
-  useEffect(() => {
-    if (slug) fetchBlogs();
-  }, [slug]);
-
-  if (loading) {
+  if (isLoading) {
     return <LoadingCompo />;
   }
 
-  const firstBlog = blogs[0];
+  const firstBlog = (blogs && blogs[0]) || null;
 
   return (
-    <div >
+    <div>
       {/*  Hero Section (First Blog) */}
       {firstBlog ? (
         <div className="relative w-full h-[30vh] sm:h-[80vh] flex items-center justify-center">
@@ -99,7 +93,7 @@ export default function Page() {
       {/*  Blogs Section */}
       <section className="w-full md:max-lg:w-[85%] relative flex flex-col lg:flex-row gap-8 py-25 md:py-32 2xl:px-35 px-6 md:mt-4 md:p-20">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 flex-1">
-          {blogs.length > 0 ? (
+          {blogs && blogs.length > 0 ? (
             blogs.map((blog) => <BlogCard key={blog._id} blog={blog} />)
           ) : (
             <div className="text-center col-span-full">
