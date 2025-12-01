@@ -64,7 +64,7 @@ export const Sidebar = () => {
        z-10 w-full sm:w-[300px] h-[350px]"
       >
         <Image
-          src="https://share.google/images/iW57krW5fU9IYvBzU"
+          src="/No-Image-Available.png"
           alt="hashim dawakhana"
           fill
           className="object-cover"
