@@ -12,7 +12,6 @@ import useSWR from "swr";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Page() {
-
   const params = useParams();
   const slug = params?.slug as string;
 
@@ -21,7 +20,7 @@ export default function Page() {
     fetcher,
     {
       revalidateOnFocus: false,
-      dedupingInterval: 60000, // 1 minute caching
+      dedupingInterval: 60000,
     }
   );
 

@@ -23,9 +23,13 @@ export const Hero = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   // SWR hook for caching blogs
-  const { data: blogs, error, isLoading } = useSWR<Blog[]>("/api/blogs", fetcher, {
-    revalidateOnFocus: false,  
-    dedupingInterval: 60000,    // 1 min caching
+  const {
+    data: blogs,
+    error,
+    isLoading,
+  } = useSWR<Blog[]>("/api/blogs", fetcher, {
+    revalidateOnFocus: false,
+    dedupingInterval: 60000, // 1 min caching
   });
 
   useEffect(() => {
@@ -39,7 +43,9 @@ export const Hero = () => {
   if (error)
     return (
       <section className="flex justify-center items-center py-20">
-        <p className="text-red-500 text-lg">Failed to load blogs. Please try again later.</p>
+        <p className="text-red-500 text-lg">
+          Failed to load blogs. Please try again later.
+        </p>
       </section>
     );
 
